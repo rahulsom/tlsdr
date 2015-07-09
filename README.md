@@ -33,6 +33,8 @@ When we say certificate in this section, we actually mean certificate+key pair.
 goodca
   - trusted    (CN:trusted.demo.com)
   - mutual     (CN:mutual.demo.com)
+  - goodclient (CN:goodclient)
 badca
   - bad        (CN:bad.demo.com)
+  - badclient  (CN:badclient)
 ```
