@@ -10,6 +10,7 @@ gpgcheck=0
 enabled=1
 EOF
 
-yum install -y wireshark nginx java-1.8.0-openjdk openssl
-service nginx start
+yum install -y wireshark nginx java-1.8.0-openjdk openssl git ruby rubygems
+gem install thor
 rm -rf /etc/nginx && cd /etc && ln -s /vagrant/test/etc/nginx
+service nginx start
