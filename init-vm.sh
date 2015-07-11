@@ -13,7 +13,7 @@ enabled=1
 EOF
 
 # Install all packages required
-yum install -y wireshark nginx openssl git ruby rubygems man #java-1.8.0-openjdk
+yum install -y wireshark nginx openssl git ruby rubygems man wget ntp #java-1.8.0-openjdk
 
 # Install thor for carb to work
 gem install thor
