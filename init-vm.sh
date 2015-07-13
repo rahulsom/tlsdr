@@ -29,3 +29,6 @@ service nginx start
 # Install go
 wget -q --no-check-certificate https://storage.googleapis.com/golang/go1.4.2.linux-amd64.tar.gz
 tar -C /usr/local -xzf go1.4.2.linux-amd64.tar.gz
+
+#Update time
+ntpdate pool.ntp.org
