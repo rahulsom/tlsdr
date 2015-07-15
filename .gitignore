@@ -76,4 +76,4 @@ _testmain.go
 *.test
 *.prof
 
-
+data/

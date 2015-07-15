@@ -16,6 +16,16 @@ vagrant up && vagrant ssh
 ```
 3. Profit!
 
+Creating PCAPs for testing
+---
+Once SSHed into the vagrant box, run this
+
+```bash
+sudo su - 
+cd /vagrant/test
+./bootstrap.sh
+```
+
 The Certificate Authorities
 ---
 There are 2 certificate authorities created using carb
