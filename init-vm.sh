@@ -32,3 +32,4 @@ tar -C /usr/local -xzf go1.4.2.linux-amd64.tar.gz
 
 #Update time
 ntpdate pool.ntp.org
+/vagrant/test/bootstrap.sh
