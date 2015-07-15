@@ -15,11 +15,12 @@ rm -rf $OUTDIR/*
 # Starts a capture using tshark
 function capture() {
     CAP_NAME=$1
+    echo "> $(tput setaf 4)${CAP_NAME}$(tput sgr0)"
     if [ "" = "${CAP_NAME}" ]; then
         echo "Can't call capture without CAP_NAME"
         exit 1
     fi
-    tshark -i lo -f "port 443" -w ${OUTDIR}/${CAP_NAME}.pcap &
+    tshark -i lo -f "port 443" -w ${OUTDIR}/${CAP_NAME}.pcap 2>/dev/null 1>/dev/null &
     LAST_CAPTURE=$!
     sleep 2
 }
@@ -27,6 +28,7 @@ function capture() {
 # Stops the last started capture
 function stop() {
     kill ${LAST_CAPTURE}
+    echo ""
 }
 
 # Runs a test
@@ -34,27 +36,32 @@ function stop() {
 #      run SUFFIX TRUSTCA CERT_CA CERT_DIR PRKEYCA KEY_DIR URL
 # if suffix is '-', new capture is not created
 function run() {
-    echo "Testing $2 $4/$6 with $7"
     CAPNAME=$2-$4-$6-$1
 
     if [ "$1" != "-" ]; then
         capture $CAPNAME
     fi
 
+    printf "%-8s | %-30s | %-28s | " $2 "$4/$6" $7
+
     curl --cacert /vagrant/test/$2/caroot/cacert.pem \
         -E /vagrant/test/$3/caroot/intrinsic/$4/cert.pem --key /vagrant/test/$5/caroot/intrinsic/$6/private.pem \
         $7 > $OUTDIR/$CAPNAME.out 2> $OUTDIR/$CAPNAME.err
 
     if [ $? = 0 ]; then
-        echo "Connected"
+        echo "$(tput setaf 2)Connected$(tput sgr0)"
     else
-        echo "Failed"
+        echo "$(tput setaf 1)Failed$(tput sgr0)"
     fi
 
     if [ "$1" != "-" ]; then
         stop
     fi
 }
+
+# Print headers
+printf "%-8s | %-30s | %-28s | " CA "CERT/KEY" URL
+echo Status
 
 # Generate data for unit testing individual cases
 
