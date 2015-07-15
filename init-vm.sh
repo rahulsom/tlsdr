@@ -13,7 +13,7 @@ enabled=1
 EOF
 
 # Install all packages required
-yum install -y wireshark nginx openssl git ruby rubygems man #java-1.8.0-openjdk
+yum install -y wireshark nginx openssl git ruby rubygems man wget ntp #java-1.8.0-openjdk
 
 # Install thor for carb to work
 gem install thor
@@ -29,3 +29,6 @@ service nginx start
 # Install go
 wget -q --no-check-certificate https://storage.googleapis.com/golang/go1.4.2.linux-amd64.tar.gz
 tar -C /usr/local -xzf go1.4.2.linux-amd64.tar.gz
+
+#Update time
+ntpdate pool.ntp.org
