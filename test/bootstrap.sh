@@ -64,17 +64,23 @@ printf "%-8s | %-30s | %-28s | " CA "CERT/KEY" URL
 echo Status
 
 # Generate data for unit testing individual cases
-
 #run  SUFFIX      TRUSTCA    CERT_CA    CERT_DIR       PRKEYCA    KEY_DIR        URL
+date -s "2015-07-08T23:24:00"
+ run  future      goodca     goodca     goodclient     goodca     goodclient     https://mutual.demo.com/
+date -s "2015-07-15T23:24:00"
  run  bad         goodca     goodca     goodclient     goodca     goodclient     https://bad.demo.com/
  run  trusted     goodca     goodca     goodclient     goodca     goodclient     https://trusted.demo.com/
  run  mutual      goodca     goodca     goodclient     goodca     goodclient     https://mutual.demo.com/
 
 # Generate data for comprehensive reporting
-
 capture integration
 #run  SUFFIX      TRUSTCA    CERT_CA    CERT_DIR       PRKEYCA    KEY_DIR        URL
+date -s "2015-07-08T23:24:00"
+ run  future      goodca     goodca     goodclient     goodca     goodclient     https://mutual.demo.com/
+date -s "2015-07-15T23:24:00"
  run  -           goodca     goodca     goodclient     goodca     goodclient     https://bad.demo.com/
  run  -           goodca     goodca     goodclient     goodca     goodclient     https://trusted.demo.com/
  run  -           goodca     goodca     goodclient     goodca     goodclient     https://mutual.demo.com/
 stop
+
+ntpdate pool.ntp.org
