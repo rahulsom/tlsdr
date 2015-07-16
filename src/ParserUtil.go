@@ -26,6 +26,8 @@ func main() {
 //
 //}
 
+// chanPacs: raw data as channel of gopacket.Packet from pcap file
+// return: a list of packets that has payload([]byte)
 func producePayloadPackets(chanPacs chan gopacket.Packet) list.List {
 	var payloadPacs list.List
 	for packet := range chanPacs {
@@ -33,12 +35,14 @@ func producePayloadPackets(chanPacs chan gopacket.Packet) list.List {
 			payloadPacs.PushBack(packet.ApplicationLayer().Payload())
 		}
 	}
-	for e := payloadPacs.Front(); e != nil; e=e.Next() {
-		log.Println("Payload data:",e)
+	for e := payloadPacs.Front(); e != nil; e = e.Next() {
+		log.Println("Payload data:", e)
 	}
 	return payloadPacs
 }
 
+// payloadPacs: a list of raw packets([]byte)
+// return a list of TLSRecordLayer that only contains handshake packets
 func produceHandshakePackets(payloadPacs list.List) list.List {
 	var handShakePacs list.List
 	for e := payloadPacs.Front(); e != nil; e = e.Next() {
@@ -52,8 +56,10 @@ func produceHandshakePackets(payloadPacs list.List) list.List {
 			}
 		}
 	}
-	for e := handShakePacs.Front(); e != nil; e=e.Next() {
-		log.Println("Handshake data only:",e)
+	for e := handShakePacs.Front(); e != nil; e = e.Next() {
+		log.Println("Handshake data only:", e)
 	}
 	return handShakePacs
 }
+
+
