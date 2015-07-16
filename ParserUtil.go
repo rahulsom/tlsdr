@@ -2,7 +2,7 @@ package main
 
 import (
 	_ "fmt"
-	"github.com/google/gopacket/pcap"
+	_ "github.com/google/gopacket/pcap"
 	"github.com/google/gopacket"
 	"github.com/certifyTian/TLSHandshakeDecoder"
 	_ "github.com/davecgh/go-spew/spew"
@@ -10,6 +10,7 @@ import (
 	"container/list"
 )
 
+/*
 //TODO obviously not a main function, rename it to the caller
 func main() {
 	if handle, err := pcap.OpenOffline("data/goodca-goodclient-goodclient-bad.pcap"); err != nil {
@@ -21,6 +22,7 @@ func main() {
 		produceAlertPackets(payloadPackets)
 	}
 }
+*/
 
 //func handlePacket(p gopacket.PacketSource) {
 //
@@ -62,8 +64,10 @@ func produceHandshakePackets(payloadPacs list.List) list.List {
 
 		switch handshake.HandshakeType {
 			case TLSHandshakeDecoder.HandshakeTypeClientHello: parseClientHello(handshake)
-			case TLSHandshakeDecoder.HandshakeTypeServerHello: parseServerHello(handshake)
-			default: //log.Printf("NOT covered")
+
+//			case TLSHandshakeDecoder.HandshakeTypeServerHello: parseServerHello(handshake)
+
+			default: //‰log.Printf("NOT covered")
 		}
 
 	}
@@ -92,12 +96,12 @@ func parseClientHello(hsp TLSHandshakeDecoder.TLSHandshake) TLSHandshakeDecoder.
 	}
 }
 
-// parse a handshake to a server hello struct
-func parseServerHello(hsp TLSHandshakeDecoder.TLSHandshake) TLSHandshakeDecoder.TLSServerHello {
-	var psh TLSHandshakeDecoder.TLSServerHello
-
-	return psh
-}
+//// parse a handshake to a server hello struct
+//func parseServerHello(hsp TLSHandshakeDecoder.TLSHandshake) TLSHandshakeDecoder.TLSServerHello {
+//	var psh TLSHandshakeDecoder.TLSServerHello
+//
+//	return psh
+//}
 
 func produceAlertPackets(payloadPacs list.List) list.List{
 	var alertPacs list.List
