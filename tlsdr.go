@@ -35,6 +35,10 @@ func analyzeData(data list.List) (list.List) {
 func visualizeData(data list.List, output string, format string) {
 	log.Println("Visualizing data to " + output + " as " + format)
 	// TODO Yuan
+	os.RemoveAll(output)
+	os.MkdirAll(output, 0777)
+	bytes := []byte("Hello World")
+	ioutil.WriteFile(output + "/index." + format, bytes, 0644)
 }
 
 // This is main
