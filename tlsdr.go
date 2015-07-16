@@ -37,7 +37,9 @@ func visualizeData(data list.List, output string, format string) {
 	// TODO Yuan
 	os.RemoveAll(output)
 	os.MkdirAll(output, 0777)
-	bytes := []byte("Hello World")
+
+	bytes := Visualize(data, format)
+
 	ioutil.WriteFile(output + "/index." + format, bytes, 0644)
 }
 
