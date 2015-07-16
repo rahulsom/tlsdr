@@ -77,3 +77,4 @@ _testmain.go
 *.prof
 
 data/
+_vendor/

@@ -9,7 +9,7 @@ export PS1="\[$(tput bold)\]\[$(tput setaf 6)\]\t \[$(tput setaf 2)\][\[$(tput s
 export CA_GOOD=/vagrant/test/goodca/caroot
 export  CA_BAD=/vagrant/test/badca/caroot
 
-alias tlsdr="go run /vagrant/src/tlsdr.go"
+alias tlsdr="gom run /root/tlsdr/tlsdr.go"
 alias _curl="curl -v"
 alias g_curl="_curl --cacert $CA_GOOD/cacert.pem"
 alias b_curl="_curl --cacert $CA_BAD/cacert.pem"

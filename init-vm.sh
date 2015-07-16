@@ -23,6 +23,8 @@ rm -rf /etc/nginx && cd /etc && ln -s /vagrant/test/etc/nginx
 rm /etc/hosts     && cd /etc && ln -s /vagrant/test/etc/hosts
 cd /etc/profile.d &&            ln -s /vagrant/test/etc/profile.d/aliases.sh
 
+cd $HOME
+
 # Start nginx
 service nginx start
 
@@ -35,4 +37,7 @@ ntpdate pool.ntp.org
 /vagrant/test/bootstrap.sh
 
 # Setup gom and GOPATH
-export GOPATH=/root/.go
+source /etc/profile.d/aliases.sh
+go get github.com/mattn/gom
+
+cd $HOME && ln -s /vagrant tlsdr

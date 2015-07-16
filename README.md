@@ -48,3 +48,19 @@ badca
   - bad        (CN:bad.demo.com)
   - badclient  (CN:badclient)
 ```
+
+The development environment
+---
+This project uses [gom](https://github.com/mattn/gom) for dependency management.
+ 
+1. If you haven't already, set your $GOPATH
+2. Make sure $GOPATH/bin is in your $PATH
+3. Go Get gom
+```bash
+go get github.com/mattn/gom
+```
+4. Say `gom` when you mean `go`. E.g.
+```
+gom run tlsdr.go
+```
+5. When you need new dependencies, modify `Gomfile`
