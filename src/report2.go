@@ -21,20 +21,20 @@ type HandshakeProtocolStep struct {
 
 type StepGroup struct {
 	Actor       int
-	steps       []HandshakeProtocolStep
+	Steps       []HandshakeProtocolStep
 }
 
 
 func createStepGroups(steps []HandshakeProtocolStep)([]StepGroup) {
 	groups := make([]StepGroup, 0)
 	var pre HandshakeProtocolStep = steps[0]
-	var currGroup StepGroup = StepGroup{Actor: pre.Actor, steps: make([]HandshakeProtocolStep,0)}
+	var currGroup StepGroup = StepGroup{Actor: pre.Actor, Steps: make([]HandshakeProtocolStep,0)}
 	for _, step := range steps {
 		if (step.Actor != pre.Actor) {
 			groups = append(groups, currGroup)
-			currGroup = StepGroup{Actor: step.Actor, steps: make([]HandshakeProtocolStep,0)}
+			currGroup = StepGroup{Actor: step.Actor, Steps: make([]HandshakeProtocolStep,0)}
 		}
-		currGroup.steps = append(currGroup.steps, step)
+		currGroup.Steps = append(currGroup.Steps, step)
 		pre = step
 	}
 	groups = append(groups, currGroup)
