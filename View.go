@@ -2,9 +2,9 @@ package main
 
 import (
 	"text/template"
-	"os"
-	//"fmt"
 	"container/list"
+	"bytes"
+	//"fmt"
 )
 
 const (
@@ -43,17 +43,18 @@ func createStepGroups(steps []HandshakeProtocolStep)([]StepGroup) {
 }
 
 func Visualize(data list.List, format string)([]byte) {
-	var result []byte
 	groups := getViewDataModel()
+	//var result []byte
+	output := new(bytes.Buffer)
 	switch (format) {
 		case "txt": {
 			tmpl, err := template.ParseFiles("template/txt/HandshakeProtocolDetails.txt")
 			if err != nil { panic(err) }
-			err = tmpl.Execute(os.Stdout, groups)
+			err = tmpl.Execute(output, groups)
 			if err != nil { panic(err) }
 		}
 	}
-	return result
+	return output.Bytes()
 }
 
 //For now only test data
@@ -72,6 +73,12 @@ func getViewDataModel()([]StepGroup) {
 	groups := createStepGroups(steps)
 	return groups
 }
+
+//test only
+//func main() {
+//	bytes := Visualize(list.List{}, "txt")
+//	fmt.Println(string(bytes))
+//}
 
 //func main() {
 //	steps := make([]HandshakeProtocolStep,0)
