@@ -7,12 +7,12 @@ import (
 )
 
 const (
-	CLIENT = iota
-	SERVER = iota
+	CLIENT = "Client"
+	SERVER = "Server"
 )
 
 type HandshakeProtocolStep struct {
-	Actor       int
+	Actor       string
 	Description string
 	Success     bool
 	Optional    bool
@@ -20,7 +20,7 @@ type HandshakeProtocolStep struct {
 }
 
 type StepGroup struct {
-	Actor       int
+	Actor       string
 	Steps       []HandshakeProtocolStep
 }
 
