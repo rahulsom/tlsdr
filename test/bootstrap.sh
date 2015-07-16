@@ -27,6 +27,7 @@ function capture() {
 
 # Stops the last started capture
 function stop() {
+    sleep 1
     kill ${LAST_CAPTURE}
     echo ""
 }

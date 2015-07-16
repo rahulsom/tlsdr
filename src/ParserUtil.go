@@ -1,12 +1,12 @@
 package main
 
 import (
-	"fmt"
+	_ "fmt"
 	"github.com/google/gopacket/pcap"
 	"github.com/google/gopacket"
-	_"github.com/certifyTian/TLSHandshakeDecoder"
+	"github.com/certifyTian/TLSHandshakeDecoder"
 	_ "github.com/davecgh/go-spew/spew"
-	_"log"
+	"log"
 	"container/list"
 )
 
@@ -16,7 +16,8 @@ func main() {
 		panic(err)
 	} else {
 		packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
-		producePayloadPackets(packetSource.Packets())
+		payloadPackets := producePayloadPackets(packetSource.Packets())
+		produceHandshakePackets(payloadPackets)
 
 	}
 }
@@ -33,7 +34,7 @@ func producePayloadPackets(chanPacs chan gopacket.Packet) list.List {
 		}
 	}
 	for e := payloadPacs.Front(); e != nil; e=e.Next() {
-		fmt.Println(e)
+		log.Println("Payload data:",e)
 	}
 	return payloadPacs
 }
@@ -41,9 +42,18 @@ func producePayloadPackets(chanPacs chan gopacket.Packet) list.List {
 func produceHandshakePackets(payloadPacs list.List) list.List {
 	var handShakePacs list.List
 	for e := payloadPacs.Front(); e != nil; e = e.Next() {
-		//pl := e.Value.([]byte)
-		//continue implement
+		var p TLSHandshakeDecoder.TLSRecordLayer
+		pl := e.Value.([]byte)
+		err := TLSHandshakeDecoder.DecodeRecord(&p, pl); if err != nil {
+			panic(err)
+		} else {
+			if (len(p.Fragment) > 4 && p.ContentType == TLSHandshakeDecoder.TypeHandshake) {
+				handShakePacs.PushBack(p)
+			}
+		}
 	}
-
+	for e := handShakePacs.Front(); e != nil; e=e.Next() {
+		log.Println("Handshake data only:",e)
+	}
 	return handShakePacs
 }
