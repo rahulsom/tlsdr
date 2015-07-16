@@ -57,9 +57,48 @@ func produceHandshakePackets(payloadPacs list.List) list.List {
 		}
 	}
 	for e := handShakePacs.Front(); e != nil; e = e.Next() {
-		log.Println("Handshake data only:", e)
+		log.Printf("Handshake data only:", e)
+		handshake := getHandShakeSegment(e.Value.(TLSHandshakeDecoder.TLSRecordLayer))
+
+		switch handshake.HandshakeType {
+			case TLSHandshakeDecoder.HandshakeTypeClientHello: parseClientHello(handshake)
+			case TLSHandshakeDecoder.HandshakeTypeServerHello: parseServerHello(handshake)
+
+			default: //‰log.Printf("NOT covered")
+		}
+
 	}
+	//log.Printf("%04x", TLSHandshakeDecoder.VersionTLS10)
 	return handShakePacs
 }
+
+func getHandShakeSegment(p TLSHandshakeDecoder.TLSRecordLayer) TLSHandshakeDecoder.TLSHandshake {
+	var ph TLSHandshakeDecoder.TLSHandshake
+	err := TLSHandshakeDecoder.TLSDecodeHandshake(&ph, p.Fragment); if err != nil {
+		panic(err)
+	} else {
+		//log.Println("Parsed Handshake data:", ph)
+		return ph
+	}
+}
+
+//parse a handshake to a client hello struct
+func parseClientHello(hsp TLSHandshakeDecoder.TLSHandshake) TLSHandshakeDecoder.TLSClientHello {
+	var pch TLSHandshakeDecoder.TLSClientHello
+	err := TLSHandshakeDecoder.TLSDecodeClientHello(&pch, hsp.Body); if err != nil {
+		panic(err)
+	} else {
+		log.Println("Parsed Client Hello data: ", pch)
+		return pch
+	}
+}
+
+// parse a handshake to a server hello struct
+func parseServerHello(hsp TLSHandshakeDecoder.TLSHandshake) TLSHandshakeDecoder.TLSServerHello {
+	var psh TLSHandshakeDecoder.TLSServerHello
+
+	return psh
+}
+
 
 
