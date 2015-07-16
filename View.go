@@ -73,28 +73,28 @@ func getViewDataModel()([]StepGroup) {
 	return groups
 }
 
-func main() {
-	steps := make([]HandshakeProtocolStep,0)
-	step1 := HandshakeProtocolStep { Actor: CLIENT, Description: "Client Hello"}
-	step2 := HandshakeProtocolStep { Actor: SERVER, Description: "Server Hello"}
-	step3 := HandshakeProtocolStep { Actor: SERVER, Description: "Server Certificate"}
-	step4 := HandshakeProtocolStep { Actor: SERVER, Description: "Server Hello Done"}
-	steps = append(steps,step1)
-	steps = append(steps,step2)
-	steps = append(steps,step3)
-	steps = append(steps,step4)
-
-
-	groups := createStepGroups(steps)
-
-	//fmt.Println("There was an error:", steps)
-	tmpl, err := template.ParseFiles("template/txt/HandshakeProtocolDetails.txt")
-	if err != nil {
-		panic(err)
-	}
-	//tmpl, _ := template.New("detailsteps").Parse("{{.Actor}} items are made of {{.Description}}")
-	err = tmpl.Execute(os.Stdout, groups)
-	if err != nil {
-		panic(err)
-	}
-}
+//func main() {
+//	steps := make([]HandshakeProtocolStep,0)
+//	step1 := HandshakeProtocolStep { Actor: CLIENT, Description: "Client Hello"}
+//	step2 := HandshakeProtocolStep { Actor: SERVER, Description: "Server Hello"}
+//	step3 := HandshakeProtocolStep { Actor: SERVER, Description: "Server Certificate"}
+//	step4 := HandshakeProtocolStep { Actor: SERVER, Description: "Server Hello Done"}
+//	steps = append(steps,step1)
+//	steps = append(steps,step2)
+//	steps = append(steps,step3)
+//	steps = append(steps,step4)
+//
+//
+//	groups := createStepGroups(steps)
+//
+//	//fmt.Println("There was an error:", steps)
+//	tmpl, err := template.ParseFiles("template/txt/HandshakeProtocolDetails.txt")
+//	if err != nil {
+//		panic(err)
+//	}
+//	//tmpl, _ := template.New("detailsteps").Parse("{{.Actor}} items are made of {{.Description}}")
+//	err = tmpl.Execute(os.Stdout, groups)
+//	if err != nil {
+//		panic(err)
+//	}
+//}
