@@ -9,19 +9,15 @@ import (
 	"container/list"
 )
 
+// Reads data from - (STDIN) or a named file
 func readData(input *string) ([]byte, error) {
-	var bytes []byte
-	var err error
-
 	if *input == "-" {
 		log.Println("reading bytes from stdin")
-		bytes, err = ioutil.ReadAll(os.Stdin)
+		return ioutil.ReadAll(os.Stdin)
 	} else {
 		log.Println("reading bytes from '" + *input + "'")
-		bytes, err = ioutil.ReadFile(*input)
+		return ioutil.ReadFile(*input)
 	}
-
-	return bytes, err
 }
 
 func parseData(bytes []byte) (list.List) {
@@ -76,6 +72,12 @@ func main() {
 	}
 
 	bytes, err := readData(input)
+	if err != nil {
+		log.Println(err)
+		flag.Usage()
+		os.Exit(4)
+	}
+
 	if err == nil {
 		p := parseData(bytes)
 		a := analyzeData(p)
