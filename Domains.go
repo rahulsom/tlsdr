@@ -12,7 +12,7 @@ type Event struct {
 	success     bool
 	eventType   string
 	c2s         bool
-	code 	int
+	code 	    int
 }
 
 func NewConnection(from string, to string) Connection {

@@ -19,8 +19,13 @@ func parseFile(fileName string) list.List{
 	} else {
 		packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
 		payloadPackets := producePayloadPackets(packetSource.Packets())
-		//produceHandshakePackets(payloadPackets)
-		ProduceAlertPackets(payloadPackets)
+		handshakes := produceHandshakePackets(payloadPackets)
+		//ProduceAlertPackets(payloadPackets)
+		events := CreateEventsFromHSPackets(handshakes)
+		for e := events.Front(); e != nil; e = e.Next() {
+			log.Println("Events data:", e)
+		}
+
 	}
 	return connects
 }
@@ -36,7 +41,7 @@ func producePayloadPackets(chanPacs chan gopacket.Packet) list.List {
 		}
 	}
 	for e := payloadPacs.Front(); e != nil; e = e.Next() {
-		log.Println("Payload data:", e)
+		//log.Println("Payload data:", e)
 	}
 	return payloadPacs
 }
@@ -52,23 +57,12 @@ func produceHandshakePackets(payloadPacs list.List) list.List {
 			panic(err)
 		} else {
 			if (len(p.Fragment) > 4 && p.ContentType == TLSHandshakeDecoder.TypeHandshake) {
+				//handShakePacs
 				handShakePacs.PushBack(p)
 			}
 		}
 	}
-	for e := handShakePacs.Front(); e != nil; e = e.Next() {
-		log.Printf("Handshake data only:", e)
-		handshake := getHandShakeSegment(e.Value.(TLSHandshakeDecoder.TLSRecordLayer))
 
-		switch handshake.HandshakeType {
-			case TLSHandshakeDecoder.HandshakeTypeClientHello: parseClientHello(handshake)
-
-//			case TLSHandshakeDecoder.HandshakeTypeServerHello: parseServerHello(handshake)
-
-			default: //‰log.Printf("NOT covered")
-		}
-
-	}
 	//log.Printf("%04x", TLSHandshakeDecoder.VersionTLS10)
 	return handShakePacs
 }
@@ -94,7 +88,19 @@ func parseClientHello(hsp TLSHandshakeDecoder.TLSHandshake) TLSHandshakeDecoder.
 	}
 }
 
-// --------------------------------------------Server Hello----------------------------------------
+
+func CreateEventsFromHSPackets(handShakePacs list.List) list.List {
+	var events list.List
+	for e := handShakePacs.Front(); e != nil; e = e.Next() {
+		log.Printf("Handshake data only:", e)
+		handshake := getHandShakeSegment(e.Value.(TLSHandshakeDecoder.TLSRecordLayer))
+		event := NewEvent(int(handshake.HandshakeType))
+		events.PushBack(event)
+	}
+	return events
+}
+
+
 
 
 
