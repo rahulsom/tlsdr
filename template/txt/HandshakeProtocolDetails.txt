@@ -3,7 +3,7 @@
        {{ range $i, $event := $connection.EventsArray }}
               {{ if eq $event.C2s true }}CLIENT{{ else }}SERVER{{ end }} {{ $event.EventType }} {{ if eq $event.Success true }}Success{{ else }}Failure{{ end }}
        {{ end }}
-{{ if gt (len $connection.RecommendationsArray) 0 }}{{ range $ridx, $recommendation := $connection.RecommendationsArray }}{{ if eq $ridx 0 }}     *Recommendations: {{$recommendation}}
+{{ if gt (len $connection.RecommendationsArray) 0 }}{{ range $ridx, $recommendation := $connection.RecommendationsArray }}{{ if eq $ridx 0 }}     -Recommendations: {{$recommendation}}
 {{ else }}                       {{$recommendation}} {{ end }}{{ end }}{{ else }}     All Success !{{ end }}
 {{ end }}{{ end }}---------------------------------------------------------------------------
 {{ end }}
