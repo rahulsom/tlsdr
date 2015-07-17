@@ -77,7 +77,7 @@ func main() {
 		os.Exit(3)
 	}
 
-	bytes, err := readData(input)
+	_, err := readData(input)
 	if err != nil {
 		log.Println(err)
 		flag.Usage()
@@ -85,7 +85,7 @@ func main() {
 	}
 
 	if err == nil {
-		p := parseData(bytes)
+		p := parseFile(*input)
 		a := analyzeData(p)
 		visualizeData(a, *output, *format)
 	}
