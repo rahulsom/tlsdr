@@ -95,7 +95,17 @@ func process_record_overflow(connection *Connection) { log.Panicf("Not implement
 func process_decompression_failure(connection *Connection) { log.Panicf("Not implemented") }
 func process_handshake_failure(connection *Connection) { log.Panicf("Not implemented") }
 func process_no_certificate_RESERVED(connection *Connection) { log.Panicf("Not implemented") }
-func process_bad_certificate(connection *Connection) { log.Panicf("Not implemented") }
+func process_bad_certificate(connection *Connection) {
+	event, err := findLastEvent(connection, TLSHandshakeDecoder.HandshakeTypeCertificate)
+	if err == nil {
+		event.Success = false
+	} else {
+		log.Panicf("Didn't find event")
+	}
+	connection.Success = false
+	connection.FailedReason = "The certificate was bad"
+	connection.Recommendations.PushBack("Try matching the CN to the hostname")
+}
 func process_unsupported_certificate(connection *Connection) { log.Panicf("Not implemented") }
 func process_certificate_revoked(connection *Connection) {
 	event, err := findLastEvent(connection, TLSHandshakeDecoder.HandshakeTypeCertificate)
