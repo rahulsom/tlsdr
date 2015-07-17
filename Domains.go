@@ -26,7 +26,7 @@ func NewConnection(from string, to string) Connection {
 	return Connection{Success:true, Events:&list.List{}, SrcHost:from, DestHost:to, Recommendations:&list.List{}}
 }
 
-func NewEvent(ucode uint8) *Event {
+func NewEvent(ucode uint8, c2s bool) *Event {
 	code := int(ucode)
 	// TODO Fix these things
 	lookup := make(map[int]string)
@@ -45,9 +45,9 @@ func NewEvent(ucode uint8) *Event {
 
 	// TODO FIx this
 	if code == 22 || code == 11 || code == 13 {
-		return &Event{Success:true, EventType:lookup[code], C2s: true, Code: code}
+		return &Event{Success:true, EventType:lookup[code], C2s: c2s, Code: code}
 	} else {
-		return &Event{Success:true, EventType:lookup[code], C2s: false, Code: code}
+		return &Event{Success:true, EventType:lookup[code], C2s: c2s, Code: code}
 	}
 }
 
