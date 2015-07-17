@@ -2,17 +2,19 @@ package main
 import "container/list"
 
 type Connection struct {
-	success  bool
-	events   list.List
-	srcHost  string
-	destHost string
+	success         bool
+	events          list.List
+	srcHost         string
+	destHost        string
+	recommendations list.List
+	failedReason    string
 }
 
 type Event struct {
-	success     bool
-	eventType   string
-	c2s         bool
-	code 	int
+	success   bool
+	eventType string
+	c2s       bool
+	code      int
 }
 
 func NewConnection(from string, to string) Connection {
