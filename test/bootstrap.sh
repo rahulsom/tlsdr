@@ -86,4 +86,32 @@ date -s "2015-07-15T23:24:00"
  run  -           goodca     goodca     goodclient     badca      badclient      https://mutual.demo.com/
 stop
 
+# Generate data for comprehensive reporting
+capture demo
+#run  SUFFIX      TRUSTCA    CERT_CA    CERT_DIR       PRKEYCA    KEY_DIR        URL
+date -s "2015-07-08T23:24:00"
+ run  -           goodca     goodca     goodclient     goodca     goodclient     https://mutual.demo.com/
+date -s "2015-07-15T23:24:00"
+ run  -           goodca     goodca     goodclient     goodca     goodclient     https://bad.demo.com/
+ run  -           goodca     goodca     goodclient     goodca     goodclient     https://trusted.demo.com/
+ run  -           goodca     goodca     goodclient     goodca     goodclient     https://mutual.demo.com/
+ run  -           goodca     goodca     goodclient     badca      badclient      https://mutual.demo.com/
+date -s "2015-07-08T23:24:00"
+ run  -           goodca     goodca     goodclient     goodca     goodclient     https://mutual.demo.com/
+date -s "2015-07-15T23:24:00"
+ run  -           goodca     goodca     goodclient     goodca     goodclient     https://bad.demo.com/
+ run  -           goodca     goodca     goodclient     goodca     goodclient     https://trusted.demo.com/
+ run  -           goodca     goodca     goodclient     goodca     goodclient     https://mutual.demo.com/
+ run  -           goodca     goodca     goodclient     goodca     goodclient     https://trusted.demo.com/
+ run  -           goodca     goodca     goodclient     goodca     goodclient     https://mutual.demo.com/
+ run  -           goodca     goodca     goodclient     goodca     goodclient     https://trusted.demo.com/
+ run  -           goodca     goodca     goodclient     goodca     goodclient     https://mutual.demo.com/
+ run  -           goodca     goodca     goodclient     goodca     goodclient     https://trusted.demo.com/
+ run  -           goodca     goodca     goodclient     goodca     goodclient     https://mutual.demo.com/
+ run  -           goodca     goodca     goodclient     goodca     goodclient     https://trusted.demo.com/
+ run  -           goodca     goodca     goodclient     goodca     goodclient     https://mutual.demo.com/
+ run  -           goodca     goodca     goodclient     goodca     goodclient     https://trusted.demo.com/
+ run  -           goodca     goodca     goodclient     goodca     goodclient     https://mutual.demo.com/
+stop
+
 ntpdate pool.ntp.org
