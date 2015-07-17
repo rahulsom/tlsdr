@@ -92,10 +92,8 @@ func main() {
 		l := list.List{}
 		for e := p.Front(); e != nil ; e = e.Next() {
 			c := e.Value.(*Connection)
-			log.Println("Conn: ", c)
 			l.PushBack(*c)
 		}
-		log.Println("Connections: ", p)
 		visualizeData(l, *output, *format)
 	}
 

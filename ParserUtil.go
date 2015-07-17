@@ -20,7 +20,6 @@ func parseFile(fileName string) list.List {
 	} else {
 		packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
 		processPacketsChan(packetSource.Packets(), &connections)
-		log.Print("Final Connections", connections.Front().Value)
 	}
 	return connections
 }
@@ -69,7 +68,6 @@ func processPacketsChan(chanPacs chan gopacket.Packet, connections *list.List) {
 			for e := alertPackets.Front(); e != nil; e = e.Next() {
 				alert := e.Value.(Alert)
 				DetectProblem(connection, int(alert.Description))
-				log.Println("Connection after problem", connection)
 			}
 			events := CreateEventsFromHSPackets(handshakePackets, clientSent)
 			for e := events.Front(); e != nil; e = e.Next() {
@@ -165,9 +163,8 @@ func DecomposeRecordLayer(tlsPayload []byte) list.List {
 		p.Fragment = make([]byte, p.Length)
 		l := copy(p.Fragment, tlsPayload[5+offset:5+p.Length+offset])
 		tlsLayerlist.PushBack(p)
-		log.Println("Length: ", p.Length)
+		log.Println("Length: ", p.Length, "Type: ", p.ContentType)
 		offset += 5+p.Length
-		log.Print("Type:  ", p.ContentType)
 		if l < int(p.Length) {
 			fmt.Errorf("Payload to short: copied %d, expected %d.", l, p.Length)
 		}

@@ -36,7 +36,6 @@ const (
 
 func (connection Connection) DetectProblem(alert int) Connection {
 	DetectProblem(&connection, alert)
-	log.Print("Returning connection:", connection)
 	return connection
 }
 
@@ -107,7 +106,6 @@ func process_certificate_revoked(connection *Connection) {
 	}
 	connection.Success = false
 	connection.FailedReason = "The certificate is revoked"
-	log.Println(connection.FailedReason)
 	connection.Recommendations.PushBack("Try getting a new certificate")
 }
 func process_certificate_expired(connection *Connection) {
@@ -119,7 +117,6 @@ func process_certificate_expired(connection *Connection) {
 	}
 	connection.Success = false
 	connection.FailedReason = "The certificate is expired"
-	log.Println(connection.FailedReason)
 	connection.Recommendations.PushBack("Try getting a new certificate")
 }
 func process_certificate_unknown(connection *Connection) {
@@ -135,7 +132,6 @@ func process_unknown_ca(connection *Connection) {
 	}
 	connection.Success = false
 	connection.FailedReason = "The CA is unknown"
-	log.Println(connection)
 	connection.Recommendations.PushBack("Try getting a certificate from a trusted CA")
 	connection.Recommendations.PushBack("Try adding the CA of the issuer to the trust store")
 }
@@ -150,7 +146,6 @@ func process_decrypt_error(connection *Connection) {
 	}
 	connection.Success = false
 	connection.FailedReason = "Decrypting the traffic failed"
-	log.Println(connection.FailedReason)
 	connection.Recommendations.PushBack("Verify that the Certificate and private key match")
 }
 func process_export_restriction_RESERVED(connection *Connection) { log.Panicf("Not implemented") }
