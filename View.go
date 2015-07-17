@@ -2,9 +2,11 @@ package main
 
 import (
 	"text/template"
+	htmltemplate "html/template"
 	"container/list"
 	"bytes"
 	//"fmt"
+	"fmt"
 )
 
 const (
@@ -53,6 +55,12 @@ func Visualize(data list.List, format string)([]byte) {
 			err = tmpl.Execute(output, groups)
 			if err != nil { panic(err) }
 		}
+		case "html": {
+            tmpl, err := htmltemplate.ParseFiles("template/html/HandshakeProtocolDetails.html")
+			if err != nil { panic(err) }
+			err = tmpl.Execute(output, groups)
+			if err != nil { panic(err) }
+		}
 	}
 	return output.Bytes()
 }
@@ -74,11 +82,11 @@ func getViewDataModel()([]StepGroup) {
 	return groups
 }
 
-//test only
-//func main() {
-//	bytes := Visualize(list.List{}, "txt")
-//	fmt.Println(string(bytes))
-//}
+// test only
+func main() {
+	bytes := Visualize(list.List{}, "html")
+	fmt.Println(string(bytes))
+}
 
 //func main() {
 //	steps := make([]HandshakeProtocolStep,0)
