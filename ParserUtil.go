@@ -93,10 +93,10 @@ func CreateEventsFromHSPackets(handShakePacs list.List) list.List {
 	var events list.List
 	for el := handShakePacs.Front(); el != nil; el = el.Next() {
 		tlsRecordLayer := el.Value.(TLSHandshakeDecoder.TLSRecordLayer)
-		hsPacets := DecomposeHandshakes(tlsRecordLayer.Fragment)
-		for e := hsPacets.Front(); e != nil; e = e.Next() {
+		hsPackets := DecomposeHandshakes(tlsRecordLayer.Fragment)
+		for e := hsPackets.Front(); e != nil; e = e.Next() {
 			handshake := e.Value.(TLSHandshakeDecoder.TLSHandshake)
-			event := NewEvent(handshake.HandshakeType)
+			event := NewEvent(handshake.HandshakeType, true /*TODO Where did the event originate*/)
 			events.PushBack(event)
 			log.Printf("Created Event:", event)
 		}

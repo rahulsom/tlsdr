@@ -6,6 +6,7 @@ import (
 	"container/list"
 	"bytes"
 	//"fmt"
+    "encoding/json"
 )
 
 const (
@@ -44,6 +45,7 @@ func createStepGroups(steps []HandshakeProtocolStep)([]StepGroup) {
 }
 
 func Visualize(data list.List, format string)([]byte) {
+	//TODO replace with real data
 	groups := groupConnectionsDataModel(CreateTestData())
 	//var result []byte
 	output := new(bytes.Buffer)
@@ -60,6 +62,11 @@ func Visualize(data list.List, format string)([]byte) {
 			err = tmpl.Execute(output, groups)
 			if err != nil { panic(err) }
 		}
+		case "json": {
+			b, err := json.Marshal(groups)
+			if err != nil { panic(err) }
+			output.Write(b)
+		}
 	}
 	return output.Bytes()
 }
@@ -69,18 +76,6 @@ func groupConnectionsDataModel(connections list.List)([][]Connection) {
 	groupMap := make(map[string][]Connection)
 	for e := connections.Front(); e != nil; e = e.Next() {
 		conn := e.Value.(Connection)
-
-		//Convert list to array, don't ask me why
-		conn.EventsArray = make([]Event, 0)
-		for e := conn.Events.Front(); e != nil; e = e.Next() {
-			event := e.Value.(Event)
-			conn.EventsArray=append(conn.EventsArray,event)
-		}
-		conn.RecommendationsArray = make([]string, 0)
-		for e := conn.Recommendations.Front(); e != nil; e = e.Next() {
-			recommendation := e.Value.(string)
-			conn.RecommendationsArray = append(conn.RecommendationsArray,recommendation)
-		}
 
 		//do grouping
 		var key string

@@ -73,17 +73,17 @@ func DetectProblem(connection Connection, alert int) {
 	}
 }
 
-func findLastEvent(connection Connection, code uint8) (Event, error) {
+func findLastEvent(connection Connection, code uint8) (*Event, error) {
 	newCode := int(code)
 	for e := connection.Events.Back(); e != nil; e = e.Prev() {
 		// do something with e.Value
-		if event, ok := e.Value.(Event); ok {
+		if event, ok := e.Value.(*Event); ok {
 			if event.Code == newCode {
 				return event, nil
 			}
 		}
 	}
-	return Event{}, errors.New("Not found")
+	return nil, errors.New("Not found")
 }
 func process_close_notify(connection Connection) {
 	log.Println("close_notify is good!")

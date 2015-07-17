@@ -1,4 +1,1 @@
-{{ range $index, $group := . }}
- --------------------------------------------------------------------{{ range $idx, $step := $group.Steps }}
-      {{ if eq $idx 0 }}-   {{$step.Actor}} [sent] {{$step.Description}}{{ else }}-          [sent] {{$step.Description}}{{ end }}{{ end }}
- --------------------------------------------------------------------{{ end }}
+{{ . }}
