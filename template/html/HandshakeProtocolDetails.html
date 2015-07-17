@@ -14,6 +14,7 @@
   <table class="table table-hover">
     <thead>
       <tr>
+        <td>#</td>
         <td>Src Host</td>
         <td>Dest Host</td>
         <td>Actor</td>
@@ -26,13 +27,15 @@
     <tbody>
     {{ range $index, $group := . }}
       {{ range $subIndex, $connection := $group }}
+        {{ if eq $subIndex 0 }}
           {{ if eq $connection.Success true }}
               <tr class="success">
           {{ else }}
               <tr class="danger">
           {{ end }}
-                <td>[Src Host]{{$connection.SrcHost}}</td>
-                <td>[Dest Host]{{$connection.DestHost}}</td>
+                <td>{{len $group}}</td>
+                <td>{{$connection.SrcHost}}</td>
+                <td>{{$connection.DestHost}}</td>
                 <td>-</td>
                 <td>-</td>
           {{ if eq $connection.Success true }}
@@ -49,7 +52,7 @@
               {{ else }}
               <tr class="danger">
               {{ end }}
-
+                <td></td>
                 <td></td>
                 <td></td>
 
@@ -71,8 +74,9 @@
               </tr>
 
           {{ end }}
+        {{ end }}
       {{ end }}
-      <tr class="warning"><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="warning"><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
     {{ end }}
     </tbody>
   </table>
