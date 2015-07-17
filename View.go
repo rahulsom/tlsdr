@@ -68,14 +68,16 @@ func Visualize(data list.List, format string)([]byte) {
 //For now only test data
 func getViewDataModel()([]StepGroup) {
 	steps := make([]HandshakeProtocolStep,0)
-	step1 := HandshakeProtocolStep { Actor: CLIENT, Description: "Client Hello"}
-	step2 := HandshakeProtocolStep { Actor: SERVER, Description: "Server Hello"}
-	step3 := HandshakeProtocolStep { Actor: SERVER, Description: "Server Certificate"}
-	step4 := HandshakeProtocolStep { Actor: SERVER, Description: "Server Hello Done"}
+	step1 := HandshakeProtocolStep { Actor: CLIENT, Description: "Client Hello", Success: true}
+	step2 := HandshakeProtocolStep { Actor: SERVER, Description: "Server Hello", Success: true}
+	step3 := HandshakeProtocolStep { Actor: SERVER, Description: "Server Certificate", Success: true}
+	step4 := HandshakeProtocolStep { Actor: SERVER, Description: "Server Hello Done", Success: true}
+	step5 := HandshakeProtocolStep { Actor: CLIENT, Description: "Verify Certificate", Success:false}
 	steps = append(steps,step1)
 	steps = append(steps,step2)
 	steps = append(steps,step3)
 	steps = append(steps,step4)
+	steps = append(steps,step5)
 
 
 	groups := createStepGroups(steps)

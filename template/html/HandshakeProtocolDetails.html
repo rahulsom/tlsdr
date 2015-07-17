@@ -25,23 +25,21 @@
     <tbody>
     {{ range $index, $group := . }}
       {{ range $idx, $step := $group.Steps }}
-        {{ if eq $idx 0 }}
-            <tr>
-              <td>-</td>
-              <td>{{$step.Actor}}</td>
-              <td>[sent]</td>
-              <td>{{$step.Description}}</td>
-              <td>{{$step.Success}}</td>
-            </tr>
-        {{ else }}
-           <tr>
-             <td>-</td>
-             <td></td>
-             <td>[sent]</td>
-             <td>{{$step.Description}}</td>
-            <td>{{$step.Success}}</td>
-          </tr>
-        {{ end }}
+          {{ if eq $step.Success true }}
+              <tr class="success">
+          {{ else }}
+              <tr class="danger">
+          {{ end }}
+                <td>-</td>
+                <td>{{$step.Actor}}</td>
+                <td>[sent]</td>
+                <td>{{$step.Description}}</td>
+          {{ if eq $step.Success true }}
+                <td>Success</td>
+          {{ else }}
+                <td>Failure</td>
+          {{ end }}
+              </tr>
       {{ end }}
     {{ end }}
     </tbody>
