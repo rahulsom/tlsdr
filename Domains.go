@@ -5,23 +5,23 @@ import (
 )
 
 type Connection struct {
-	success         bool
-	events          list.List
-	srcHost         string
-	destHost        string
-	recommendations list.List
-	failedReason    string
+	Success         bool
+	Events          list.List
+	SrcHost         string
+	DestHost        string
+	Recommendations list.List
+	FailedReason    string
 }
 
 type Event struct {
-	success   bool
-	eventType string
-	c2s       bool
-	code      int
+	Success   bool
+	EventType string
+	C2s       bool
+	Code      int
 }
 
 func NewConnection(from string, to string) Connection {
-	return Connection{success:true, events:list.List{}, srcHost:from, destHost:to}
+	return Connection{Success:true, Events:list.List{}, SrcHost:from, DestHost:to}
 }
 
 func NewEvent(ucode uint8) Event {
@@ -47,26 +47,26 @@ func NewEvent(ucode uint8) Event {
 
 	// TODO FIx this
 	if code == 22 || code == 11 || code == 13 {
-		return Event{success:true, eventType:lookup[code], c2s: true, code: code}
+		return Event{Success:true, EventType:lookup[code], C2s: true, Code: code}
 	} else {
-		return Event{success:true, eventType:lookup[code], c2s: false, code: code}
+		return Event{Success:true, EventType:lookup[code], C2s: false, Code: code}
 	}
 }
 
 func (event Event) String() string {
-	return fmt.Sprintf("Event{success: %t, type: '%s'($d)}", event.success, event.eventType, event.code)
+	return fmt.Sprintf("Event{success: %t, type: '%s'($d)}", event.Success, event.EventType, event.Code)
 }
 
 func (connection Connection) String() string {
 	return fmt.Sprintf("Connection{success: %t, failReason: '%s', src: '%s', dest: '%s', recommendations: %#v, events: %#v}",
-		connection.success, connection.failedReason, connection.srcHost, connection.destHost, connection.recommendations, connection.events)
+		connection.Success, connection.FailedReason, connection.SrcHost, connection.DestHost, connection.Recommendations, connection.Events)
 }
 
 func (connection Connection) AddEvent(event Event) {
-	connection.events.PushBack(event)
+	connection.Events.PushBack(event)
 }
 
 func (connection Connection) WithEvent(event Event) Connection {
-	connection.events.PushBack(event)
+	connection.Events.PushBack(event)
 	return connection
 }
