@@ -2,13 +2,16 @@ sudo: true
 language: go
 go:
   - 1.4.2
-  - tip
 os:
   - linux
-  - osx
 before_install:
   - sudo apt-get install libpcap-dev
   - go get github.com/mattn/gom
+  - go get github.com/mitchellh/gox
+  - gox -build-toolchain
 script:
-  - $HOME/gopath/bin/gom install
-  - $HOME/gopath/bin/gom test
+  - "./travis.sh"
+  - gox
+cache:
+  directories:
+    - "$HOME/gopath"
