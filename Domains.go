@@ -61,7 +61,8 @@ func (event Event) String() string {
 
 func (connection Connection) String() string {
 	return fmt.Sprintf("Connection(success: %t, failReason: '%s', src: '%s', dest: '%s') {recommendations: %#v, events: %#v}",
-		connection.Success, connection.FailedReason, connection.SrcHost, connection.DestHost, connection.Recommendations, connection.Events)
+		connection.Success, connection.FailedReason, connection.SrcHost, connection.DestHost,
+		connection.RecommendationsArray(), connection.EventsArray())
 }
 
 func (connection Connection) AddEvent(event Event) {
