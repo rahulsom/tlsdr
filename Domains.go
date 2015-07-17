@@ -58,11 +58,11 @@ func NewEvent(ucode uint8) Event {
 }
 
 func (event Event) String() string {
-	return fmt.Sprintf("Event{success: %t, type: '%s'($d)}", event.Success, event.EventType, event.Code)
+	return fmt.Sprintf("Event(success: %t, type: '%s($d)')", event.Success, event.EventType, event.Code)
 }
 
 func (connection Connection) String() string {
-	return fmt.Sprintf("Connection{success: %t, failReason: '%s', src: '%s', dest: '%s', recommendations: %#v, events: %#v}",
+	return fmt.Sprintf("Connection(success: %t, failReason: '%s', src: '%s', dest: '%s') {recommendations: %#v, events: %#v}",
 		connection.Success, connection.FailedReason, connection.SrcHost, connection.DestHost, connection.Recommendations, connection.Events)
 }
 
