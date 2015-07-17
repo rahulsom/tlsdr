@@ -10,6 +10,7 @@
 </head>
 <body>
 <div class="container">
+    <img src="http://i.imgur.com/ZUA9PRE.jpg" alt=""/>
   <table class="table table-hover">
     <thead>
       <tr>
@@ -23,10 +24,10 @@
       </tr>
     </thead>
 
-    <tbody>
     {{ range $index, $group := . }}
       {{ range $subIndex, $connection := $group }}
         {{ if eq $subIndex 0 }}
+      <tbody data-toggle="collapse" data-target="#body_{{$index}}" class="clickable">
           {{ if eq $connection.Success true }}
               <tr class="success">
           {{ else }}
@@ -44,8 +45,9 @@
           {{ end }}
                 <td>{{$connection.FailedReason}}</td>
               </tr>
+    </tbody>
+      <tbody id="body_{{$index}}" class="collapse">
           {{ range $i, $event := $connection.EventsArray }}
-
               {{ if eq $event.Success true }}
               <tr class="info">
               {{ else }}
@@ -93,6 +95,8 @@
   </table>
 
 </div>
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </body>
 </html>
 
