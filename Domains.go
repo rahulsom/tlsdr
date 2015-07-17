@@ -27,9 +27,25 @@ func NewConnection(from string, to string) Connection {
 func NewEvent(code int) Event {
 	// TODO Fix these things
 	lookup := make(map[int]string)
-	lookup[3] = "Client Hello"
 
-	if code == 3 || code == 4 || code == 7 {
+	lookup[20] = "TypeChangeCypherSpec"
+	lookup[21] = "TypeAlert"
+	lookup[22] = "TypeHandshake"
+	lookup[23] = "TypeApplicationData"
+	lookup[0] = "HandshakeTypeHelloRequest"
+	lookup[1] = "HandshakeTypeClientHello"
+	lookup[2] = "HandshakeTypeServerHello"
+	lookup[3] = "HandshakeTypeHelloVerifyRequest"
+	lookup[11] = "HandshakeTypeCertificate"
+	lookup[12] = "HandshakeTypeServerKeyExchange"
+	lookup[13] = "HandshakeTypeCertificateRequest"
+	lookup[14] = "HandshakeTypeServerHelloDone"
+	lookup[15] = "HandshakeTypeCertificateVerify"
+	lookup[16] = "HandshakeTypeClientKeyExchange"
+	lookup[20] = "HandshakeTypeFinished"
+
+	// TODO FIx this
+	if code == 22 || code == 11 || code == 13 {
 		return Event{success:true, eventType:lookup[code], c2s: true, code: code}
 	} else {
 		return Event{success:true, eventType:lookup[code], c2s: false, code: code}
