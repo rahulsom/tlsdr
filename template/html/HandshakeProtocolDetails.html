@@ -16,6 +16,7 @@
       <tr>
         <td>Src Host</td>
         <td>Dest Host</td>
+        <td>Actor</td>
         <td>Action</td>
         <td>Status</td>
         <td>Failed Reason</td>
@@ -30,8 +31,9 @@
           {{ else }}
               <tr class="danger">
           {{ end }}
-                <td>{{$connection.SrcHost}}</td>
-                <td>{{$connection.DestHost}}</td>
+                <td>[Src Host]{{$connection.SrcHost}}</td>
+                <td>[Dest Host]{{$connection.DestHost}}</td>
+                <td>-</td>
                 <td>-</td>
           {{ if eq $connection.Success true }}
                 <td>Success</td>
@@ -40,13 +42,44 @@
           {{ end }}
                 <td>{{$connection.FailedReason}}</td>
               </tr>
+          {{ range $i, $event := $connection.EventsArray }}
+
+              {{ if eq $event.Success true }}
+              <tr class="info">
+              {{ else }}
+              <tr class="danger">
+              {{ end }}
+
+                <td></td>
+                <td></td>
+
+              {{ if eq $event.C2s true }}
+                <td>CLIENT</td>
+              {{ else }}
+                <td>SERVER</td>
+              {{ end }}
+
+                <td>{{ $event.EventType }}</td>
+
+              {{ if eq $event.Success true }}
+                <td>Success</td>
+              {{ else }}
+                <td>Failure</td>
+              {{ end }}
+
+                <td></td>
+              </tr>
+
+          {{ end }}
       {{ end }}
-      <tr class="info"><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="warning"><td></td><td></td><td></td><td></td><td></td><td></td></tr>
     {{ end }}
     </tbody>
   </table>
 
 </div>
+
+<p class="success">{{.}}</p>
 </body>
 </html>
 
