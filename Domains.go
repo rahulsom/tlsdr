@@ -2,14 +2,15 @@ package main
 import (
 	"container/list"
 	"fmt"
+	"log"
 )
 
 type Connection struct {
 	Success         bool
-	Events          list.List
+	Events          *list.List
 	SrcHost         string
 	DestHost        string
-	Recommendations list.List
+	Recommendations *list.List
 	FailedReason    string
 
 }
@@ -23,7 +24,7 @@ type Event struct {
 }
 
 func NewConnection(from string, to string) Connection {
-	return Connection{Success:true, Events:list.List{}, SrcHost:from, DestHost:to}
+	return Connection{Success:true, Events:&list.List{}, SrcHost:from, DestHost:to, Recommendations:&list.List{}}
 }
 
 func NewEvent(ucode uint8) Event {
