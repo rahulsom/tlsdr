@@ -12,6 +12,7 @@ type Connection struct {
 	Recommendations list.List
 	FailedReason    string
 
+	//Mostly for views only
 	EventsArray    []Event
 	RecommendationsArray []string
 }
