@@ -70,10 +70,10 @@ func DetectProblem(connection Connection, alert int) {
 
 func findLastEvent(connection Connection, code uint8) (Event, error) {
 	newCode := int(code)
-	for e := connection.events.Back(); e != nil; e = e.Prev() {
+	for e := connection.Events.Back(); e != nil; e = e.Prev() {
 		// do something with e.Value
 		if event, ok := e.Value.(Event); ok {
-			if event.code == newCode {
+			if event.Code == newCode {
 				return event, nil
 			}
 		}
@@ -95,24 +95,24 @@ func process_unsupported_certificate(connection Connection) { log.Panicf("Not im
 func process_certificate_revoked(connection Connection) {
 	event, err := findLastEvent(connection, TLSHandshakeDecoder.HandshakeTypeCertificate)
 	if err == nil {
-		event.success = false
+		event.Success = false
 	} else {
 		log.Panicf("Didn't find event")
 	}
-	connection.success = false
-	connection.failedReason = "The certificate is revoked"
-	connection.recommendations.PushBack("Try getting a new certificate")
+	connection.Success = false
+	connection.FailedReason = "The certificate is revoked"
+	connection.Recommendations.PushBack("Try getting a new certificate")
 }
 func process_certificate_expired(connection Connection) {
 	event, err := findLastEvent(connection, TLSHandshakeDecoder.HandshakeTypeCertificate)
 	if err == nil {
-		event.success = false
+		event.Success = false
 	} else {
 		log.Panicf("Didn't find event")
 	}
-	connection.success = false
-	connection.failedReason = "The certificate is expired"
-	connection.recommendations.PushBack("Try getting a new certificate")
+	connection.Success = false
+	connection.FailedReason = "The certificate is expired"
+	connection.Recommendations.PushBack("Try getting a new certificate")
 }
 func process_certificate_unknown(connection Connection) {
 	log.Panicf("Not implemented")
@@ -121,27 +121,27 @@ func process_illegal_parameter(connection Connection) { log.Panicf("Not implemen
 func process_unknown_ca(connection Connection) {
 	event, err := findLastEvent(connection, TLSHandshakeDecoder.HandshakeTypeCertificate)
 	if err == nil {
-		event.success = false
+		event.Success = false
 	} else {
 		log.Panicf("Didn't find event")
 	}
-	connection.success = false
-	connection.failedReason = "The CA is unknown"
-	connection.recommendations.PushBack("Try getting a certificate from a trusted CA")
-	connection.recommendations.PushBack("Try adding the CA of the issuer to the trust store")
+	connection.Success = false
+	connection.FailedReason = "The CA is unknown"
+	connection.Recommendations.PushBack("Try getting a certificate from a trusted CA")
+	connection.Recommendations.PushBack("Try adding the CA of the issuer to the trust store")
 }
 func process_access_denied(connection Connection) { log.Panicf("Not implemented") }
 func process_decode_error(connection Connection) { log.Panicf("Not implemented") }
 func process_decrypt_error(connection Connection) {
 	event, err := findLastEvent(connection, TLSHandshakeDecoder.HandshakeTypeCertificate)
 	if err == nil {
-		event.success = false
+		event.Success = false
 	} else {
 		log.Panicf("Didn't find event")
 	}
-	connection.success = false
-	connection.failedReason = "Decrypting the traffic failed"
-	connection.recommendations.PushBack("Verify that the Certificate and private key match")
+	connection.Success = false
+	connection.FailedReason = "Decrypting the traffic failed"
+	connection.Recommendations.PushBack("Verify that the Certificate and private key match")
 }
 func process_export_restriction_RESERVED(connection Connection) { log.Panicf("Not implemented") }
 func process_protocol_version(connection Connection) { log.Panicf("Not implemented") }

@@ -11,6 +11,9 @@ type Connection struct {
 	DestHost        string
 	Recommendations list.List
 	FailedReason    string
+
+	EventsArray    []Event
+	RecommendationsArray []string
 }
 
 type Event struct {

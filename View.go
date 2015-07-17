@@ -44,7 +44,7 @@ func createStepGroups(steps []HandshakeProtocolStep)([]StepGroup) {
 }
 
 func Visualize(data list.List, format string)([]byte) {
-	groups := getViewDataModel()
+	groups := groupConnectionsDataModel(CreateTestData())
 	//var result []byte
 	output := new(bytes.Buffer)
 	switch (format) {
@@ -62,6 +62,47 @@ func Visualize(data list.List, format string)([]byte) {
 		}
 	}
 	return output.Bytes()
+}
+
+func groupConnectionsDataModel(connections list.List)([][]Connection) {
+
+	groupMap := make(map[string][]Connection)
+	for e := connections.Front(); e != nil; e = e.Next() {
+		conn := e.Value.(Connection)
+
+		//Convert list to array, don't ask me why
+		conn.EventsArray = make([]Event, 0)
+		for e := conn.Events.Front(); e != nil; e = e.Next() {
+			event := e.Value.(Event)
+			conn.EventsArray=append(conn.EventsArray,event)
+		}
+		conn.RecommendationsArray = make([]string, 0)
+		for e := conn.Recommendations.Front(); e != nil; e = e.Next() {
+			recommendation := e.Value.(string)
+			conn.RecommendationsArray = append(conn.RecommendationsArray,recommendation)
+		}
+
+		//do grouping
+		var key string
+		if (conn.Success) {
+			key = conn.SrcHost + "-" + conn.DestHost + "-success"
+		} else {
+			key = conn.SrcHost + "-" + conn.DestHost + "-false-" + conn.FailedReason
+		}
+		existingGroup, found := groupMap[key]
+		if (!found) {
+			existingGroup = make([]Connection, 0)
+		}
+		groupMap[key] = append(existingGroup, conn)
+	}
+
+	groups := make([][]Connection, len(groupMap))
+	var i int = 0
+	for _, value := range groupMap {
+		groups[i] = value
+		i ++
+	}
+	return groups
 }
 
 //For now only test data
