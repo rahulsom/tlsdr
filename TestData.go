@@ -16,13 +16,6 @@ func createMutual(stages int) Connection {
 	if (stages > 6) {conn.AddEvent(NewEvent(TLSHandshakeDecoder.HandshakeTypeCertificate))}
 	if (stages > 7) {conn.AddEvent(NewEvent(TLSHandshakeDecoder.HandshakeTypeClientKeyExchange))}
 	if (stages > 8) {conn.AddEvent(NewEvent(TLSHandshakeDecoder.HandshakeTypeCertificateVerify))}
-	if (stages > 9) {conn.AddEvent(NewEvent(TLSHandshakeDecoder.TypeChangeCypherSpec))}
-	if (stages > 10) {conn.AddEvent(NewEvent(TLSHandshakeDecoder.TypeHandshake))}
-	if (stages > 11) {conn.AddEvent(NewEvent(TLSHandshakeDecoder.TypeChangeCypherSpec))}
-	if (stages > 12) {conn.AddEvent(NewEvent(TLSHandshakeDecoder.TypeHandshake))}
-	if (stages > 13) {conn.AddEvent(NewEvent(TLSHandshakeDecoder.TypeApplicationData))}
-	if (stages > 14) {conn.AddEvent(NewEvent(TLSHandshakeDecoder.TypeApplicationData))}
-	if (stages > 15) {conn.AddEvent(NewEvent(TLSHandshakeDecoder.TypeAlert))}
 
 	return conn
 }
@@ -35,13 +28,6 @@ func createOneway(stages int) Connection {
 	if (stages > 3) {conn.AddEvent(NewEvent(TLSHandshakeDecoder.HandshakeTypeServerKeyExchange))}
 	if (stages > 4) {conn.AddEvent(NewEvent(TLSHandshakeDecoder.HandshakeTypeServerHelloDone))}
 	if (stages > 5) {conn.AddEvent(NewEvent(TLSHandshakeDecoder.HandshakeTypeClientKeyExchange))}
-	if (stages > 6) {conn.AddEvent(NewEvent(TLSHandshakeDecoder.TypeChangeCypherSpec))}
-	if (stages > 7) {conn.AddEvent(NewEvent(TLSHandshakeDecoder.TypeHandshake))}
-	if (stages > 8) {conn.AddEvent(NewEvent(TLSHandshakeDecoder.TypeChangeCypherSpec))}
-	if (stages > 9) {conn.AddEvent(NewEvent(TLSHandshakeDecoder.TypeHandshake))}
-	if (stages > 10) {conn.AddEvent(NewEvent(TLSHandshakeDecoder.TypeApplicationData))}
-	if (stages > 11) {conn.AddEvent(NewEvent(TLSHandshakeDecoder.TypeApplicationData))}
-	if (stages > 12) {conn.AddEvent(NewEvent(TLSHandshakeDecoder.TypeAlert))}
 
 	return conn
 }
@@ -54,7 +40,9 @@ func CreateTestData() list.List {
 	retval.PushBack(createOneway(5).DetectProblem(unknown_ca))
 	retval.PushBack(createOneway(5).DetectProblem(certificate_expired))
 	retval.PushBack(createOneway(5).DetectProblem(certificate_revoked))
+	retval.PushBack(createOneway(5).DetectProblem(unknown_ca))
 	retval.PushBack(createMutual(11).DetectProblem(unknown_ca))
+	retval.PushBack(createOneway(5).DetectProblem(unknown_ca))
 
 	return retval
 }

@@ -26,15 +26,11 @@ func NewConnection(from string, to string) Connection {
 	return Connection{Success:true, Events:&list.List{}, SrcHost:from, DestHost:to, Recommendations:&list.List{}}
 }
 
-func NewEvent(ucode uint8) Event {
+func NewEvent(ucode uint8) *Event {
 	code := int(ucode)
 	// TODO Fix these things
 	lookup := make(map[int]string)
 
-	lookup[20] = "TypeChangeCypherSpec"
-	lookup[21] = "TypeAlert"
-	lookup[22] = "TypeHandshake"
-	lookup[23] = "TypeApplicationData"
 	lookup[0] = "HandshakeTypeHelloRequest"
 	lookup[1] = "HandshakeTypeClientHello"
 	lookup[2] = "HandshakeTypeServerHello"
@@ -49,9 +45,9 @@ func NewEvent(ucode uint8) Event {
 
 	// TODO FIx this
 	if code == 22 || code == 11 || code == 13 {
-		return Event{Success:true, EventType:lookup[code], C2s: true, Code: code}
+		return &Event{Success:true, EventType:lookup[code], C2s: true, Code: code}
 	} else {
-		return Event{Success:true, EventType:lookup[code], C2s: false, Code: code}
+		return &Event{Success:true, EventType:lookup[code], C2s: false, Code: code}
 	}
 }
 
@@ -61,14 +57,15 @@ func (event Event) String() string {
 
 func (connection Connection) String() string {
 	return fmt.Sprintf("Connection(success: %t, failReason: '%s', src: '%s', dest: '%s') {recommendations: %#v, events: %#v}",
-		connection.Success, connection.FailedReason, connection.SrcHost, connection.DestHost, connection.Recommendations, connection.Events)
+		connection.Success, connection.FailedReason, connection.SrcHost, connection.DestHost,
+		connection.RecommendationsArray(), connection.EventsArray())
 }
 
-func (connection Connection) AddEvent(event Event) {
+func (connection Connection) AddEvent(event *Event) {
 	connection.Events.PushBack(event)
 }
 
-func (connection Connection) WithEvent(event Event) Connection {
+func (connection Connection) WithEvent(event *Event) Connection {
 	connection.Events.PushBack(event)
 	return connection
 }
@@ -77,8 +74,8 @@ func (connection Connection) EventsArray() []Event {
 	retval := make([]Event, 0)
 
 	for e := connection.Events.Front(); e != nil; e = e.Next() {
-		event := e.Value.(Event)
-		retval=append(retval,event)
+		event := e.Value.(*Event)
+		retval=append(retval, *event)
 	}
 
 	return retval
