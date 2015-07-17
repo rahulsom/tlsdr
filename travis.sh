@@ -6,7 +6,7 @@ gom install && gom build
 if [[ $TRAVIS_BRANCH == 'master' && $TRAVIS_REPO_SLUG == "rahulsom/tlsdr" \
           && $TRAVIS_PULL_REQUEST == 'false' ]]; then
     cat Gomfile| cut -d " " -f 2 | xargs -n 1 go get
-    gox -verbose
+    sudo gox -verbose
 else
   echo "Not on master branch, so not publishing"
   echo "TRAVIS_BRANCH: $TRAVIS_BRANCH"
