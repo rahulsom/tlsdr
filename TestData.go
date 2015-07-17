@@ -51,6 +51,10 @@ func CreateTestData() list.List {
 
 	retval.PushBack(createMutual(20).DetectProblem(close_notify))
 	retval.PushBack(createOneway(20).DetectProblem(close_notify))
+	retval.PushBack(createOneway(5).DetectProblem(unknown_ca))
+	retval.PushBack(createOneway(5).DetectProblem(certificate_expired))
+	retval.PushBack(createOneway(5).DetectProblem(certificate_revoked))
+	retval.PushBack(createMutual(11).DetectProblem(unknown_ca))
 
 	return retval
 }
