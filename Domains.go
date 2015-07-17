@@ -1,11 +1,16 @@
 package main
-import "container/list"
+import (
+	"container/list"
+	"fmt"
+)
 
 type Connection struct {
-	success  bool
-	events   list.List
-	srcHost  string
-	destHost string
+	success         bool
+	events          list.List
+	srcHost         string
+	destHost        string
+	recommendations list.List
+	failedReason    string
 }
 
 type Event struct {
@@ -33,4 +38,13 @@ func NewEvent(code int) Event {
 
 func AddEvent(connection Connection, event Event) {
 	connection.events.PushBack(event)
+}
+
+func (event Event) String() string {
+	return fmt.Sprintf("Event{success: %t, type: '%s'}", event.success, event.eventType)
+}
+
+func (connection Connection) String() string {
+	return fmt.Sprintf("Connection{success: %t, failReason: '%s', src: '%s', dest: '%s', recommendations: %#v, events: %#v}",
+		connection.success, connection.failedReason, connection.srcHost, connection.destHost, connection.recommendations, connection.events)
 }
