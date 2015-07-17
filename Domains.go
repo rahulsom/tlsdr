@@ -48,6 +48,7 @@ func NewEvent(ucode uint8) Event {
 	lookup[15] = "HandshakeTypeCertificateVerify"
 	lookup[16] = "HandshakeTypeClientKeyExchange"
 	lookup[20] = "HandshakeTypeFinished"
+	lookup[99] = "EncryptedHandshakeMessage"
 
 	// TODO FIx this
 	if code == 22 || code == 11 || code == 13 {
