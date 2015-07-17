@@ -12,9 +12,6 @@ type Connection struct {
 	Recommendations list.List
 	FailedReason    string
 
-	//Mostly for views only
-	EventsArray    []Event
-	RecommendationsArray []string
 }
 
 type Event struct {
@@ -74,4 +71,25 @@ func (connection Connection) AddEvent(event Event) {
 func (connection Connection) WithEvent(event Event) Connection {
 	connection.Events.PushBack(event)
 	return connection
+}
+
+func (connection Connection) EventsArray() []Event {
+	retval := make([]Event, 0)
+
+	for e := connection.Events.Front(); e != nil; e = e.Next() {
+		event := e.Value.(Event)
+		retval=append(retval,event)
+	}
+
+	return retval
+}
+func (connection Connection) RecommendationsArray() []string {
+	retval := make([]string, 0)
+
+	for e := connection.Recommendations.Front(); e != nil; e = e.Next() {
+		recommendation := e.Value.(string)
+		retval=append(retval,recommendation)
+	}
+
+	return retval
 }
