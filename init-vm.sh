@@ -13,7 +13,7 @@ enabled=1
 EOF
 
 # Install all packages required
-yum install -y wireshark nginx openssl git ruby rubygems man wget ntp tree libpcap libpcap-devel
+yum install -y wireshark nginx openssl git ruby rubygems man wget ntp tree libpcap libpcap-devel gcc
 
 # Install thor for carb to work
 gem install thor
