@@ -39,8 +39,11 @@ func visualizeData(data list.List, output string, format string) {
 	os.MkdirAll(output, 0777)
 
 	bytes := Visualize(data, format)
-
-	ioutil.WriteFile(output + "/index." + format, bytes, 0644)
+	if (output == "-") {
+		os.Stdout.Write(bytes)
+	} else {
+		ioutil.WriteFile(output + "/index." + format, bytes, 0644)
+	}
 }
 
 // This is main
