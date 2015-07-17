@@ -40,7 +40,7 @@ func visualizeData(data list.List, output string, format string) {
 
 	bytes := Visualize(data, format)
 	if (output == "-") {
-		os.Stdout.Write(bytes)
+		os.Stdout.Write(ColorizeOutput(bytes))
 	} else {
 		ioutil.WriteFile(output + "/index." + format, bytes, 0644)
 	}

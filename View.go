@@ -8,6 +8,8 @@ import (
 	"strconv"
 	//"fmt"
     "encoding/json"
+	"strings"
+	"github.com/fatih/color"
 )
 
 func Visualize(data list.List, format string)([]byte) {
@@ -64,4 +66,17 @@ func groupConnectionsDataModel(connections list.List)([][]Connection) {
 		i ++
 	}
 	return groups
+}
+
+func ColorizeOutput(bytes []byte) ([]byte) {
+	yellow := color.New(color.FgYellow).SprintFunc()
+	red := color.New(color.FgRed).SprintFunc()
+	green := color.New(color.FgGreen).SprintFunc()
+
+	var s string = string(bytes[:len(bytes)])
+	s = strings.Replace(s, "Failure", red("Failure"), -1)
+	s = strings.Replace(s, "-Recommendations", yellow("-Recommendations"), -1)
+	s = strings.Replace(s, "Success", green("Success"), -1)
+
+	return []byte(s)
 }
