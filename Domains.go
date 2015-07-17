@@ -11,6 +11,7 @@ type Connection struct {
 	DestHost        string
 	Recommendations *list.List
 	FailedReason    string
+	ConnectionId    string
 
 }
 

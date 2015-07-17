@@ -44,5 +44,10 @@ func DecodeAlert(a *Alert, data TLSHandshakeDecoder.TLSRecordLayer) {
 	a.Version = data.Version
 	a.Length = data.Length
 	a.Level = data.Fragment[0]
-	a.Description = data.Fragment[1]
+	if a.Level  != 1 && a.Level != 2 && a.Level != 255 {
+		a.Description = 255
+		a.Level = 255
+	} else {
+		a.Description = data.Fragment[1]
+	}
 }
