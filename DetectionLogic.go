@@ -35,11 +35,11 @@ const (
 )
 
 func (connection Connection) DetectProblem(alert int) Connection {
-	DetectProblem(connection, alert)
+	DetectProblem(&connection, alert)
 	return connection
 }
 
-func DetectProblem(connection Connection, alert int) {
+func DetectProblem(connection *Connection, alert int) {
 	if alert == close_notify {
 		process_close_notify(connection)
 	} else {
@@ -73,7 +73,7 @@ func DetectProblem(connection Connection, alert int) {
 	}
 }
 
-func findLastEvent(connection Connection, code uint8) (*Event, error) {
+func findLastEvent(connection *Connection, code uint8) (*Event, error) {
 	newCode := int(code)
 	for e := connection.Events.Back(); e != nil; e = e.Prev() {
 		// do something with e.Value
@@ -85,19 +85,19 @@ func findLastEvent(connection Connection, code uint8) (*Event, error) {
 	}
 	return nil, errors.New("Not found")
 }
-func process_close_notify(connection Connection) {
+func process_close_notify(connection *Connection) {
 	log.Println("close_notify is good!")
 }
-func process_unexpected_message(connection Connection) { log.Panicf("Not implemented") }
-func process_bad_record_mac(connection Connection) { log.Panicf("Not implemented") }
-func process_decryption_failed_RESERVED(connection Connection) { log.Panicf("Not implemented") }
-func process_record_overflow(connection Connection) { log.Panicf("Not implemented") }
-func process_decompression_failure(connection Connection) { log.Panicf("Not implemented") }
-func process_handshake_failure(connection Connection) { log.Panicf("Not implemented") }
-func process_no_certificate_RESERVED(connection Connection) { log.Panicf("Not implemented") }
-func process_bad_certificate(connection Connection) { log.Panicf("Not implemented") }
-func process_unsupported_certificate(connection Connection) { log.Panicf("Not implemented") }
-func process_certificate_revoked(connection Connection) {
+func process_unexpected_message(connection *Connection) { log.Panicf("Not implemented") }
+func process_bad_record_mac(connection *Connection) { log.Panicf("Not implemented") }
+func process_decryption_failed_RESERVED(connection *Connection) { log.Panicf("Not implemented") }
+func process_record_overflow(connection *Connection) { log.Panicf("Not implemented") }
+func process_decompression_failure(connection *Connection) { log.Panicf("Not implemented") }
+func process_handshake_failure(connection *Connection) { log.Panicf("Not implemented") }
+func process_no_certificate_RESERVED(connection *Connection) { log.Panicf("Not implemented") }
+func process_bad_certificate(connection *Connection) { log.Panicf("Not implemented") }
+func process_unsupported_certificate(connection *Connection) { log.Panicf("Not implemented") }
+func process_certificate_revoked(connection *Connection) {
 	event, err := findLastEvent(connection, TLSHandshakeDecoder.HandshakeTypeCertificate)
 	if err == nil {
 		event.Success = false
@@ -108,7 +108,7 @@ func process_certificate_revoked(connection Connection) {
 	connection.FailedReason = "The certificate is revoked"
 	connection.Recommendations.PushBack("Try getting a new certificate")
 }
-func process_certificate_expired(connection Connection) {
+func process_certificate_expired(connection *Connection) {
 	event, err := findLastEvent(connection, TLSHandshakeDecoder.HandshakeTypeCertificate)
 	if err == nil {
 		event.Success = false
@@ -118,12 +118,13 @@ func process_certificate_expired(connection Connection) {
 	connection.Success = false
 	connection.FailedReason = "The certificate is expired"
 	connection.Recommendations.PushBack("Try getting a new certificate")
+	log.Println("connection is", connection)
 }
-func process_certificate_unknown(connection Connection) {
+func process_certificate_unknown(connection *Connection) {
 	log.Panicf("Not implemented")
 }
-func process_illegal_parameter(connection Connection) { log.Panicf("Not implemented") }
-func process_unknown_ca(connection Connection) {
+func process_illegal_parameter(connection *Connection) { log.Panicf("Not implemented") }
+func process_unknown_ca(connection *Connection) {
 	event, err := findLastEvent(connection, TLSHandshakeDecoder.HandshakeTypeCertificate)
 	if err == nil {
 		event.Success = false
@@ -135,9 +136,9 @@ func process_unknown_ca(connection Connection) {
 	connection.Recommendations.PushBack("Try getting a certificate from a trusted CA")
 	connection.Recommendations.PushBack("Try adding the CA of the issuer to the trust store")
 }
-func process_access_denied(connection Connection) { log.Panicf("Not implemented") }
-func process_decode_error(connection Connection) { log.Panicf("Not implemented") }
-func process_decrypt_error(connection Connection) {
+func process_access_denied(connection *Connection) { log.Panicf("Not implemented") }
+func process_decode_error(connection *Connection) { log.Panicf("Not implemented") }
+func process_decrypt_error(connection *Connection) {
 	event, err := findLastEvent(connection, TLSHandshakeDecoder.HandshakeTypeCertificate)
 	if err == nil {
 		event.Success = false
@@ -148,12 +149,12 @@ func process_decrypt_error(connection Connection) {
 	connection.FailedReason = "Decrypting the traffic failed"
 	connection.Recommendations.PushBack("Verify that the Certificate and private key match")
 }
-func process_export_restriction_RESERVED(connection Connection) { log.Panicf("Not implemented") }
-func process_protocol_version(connection Connection) { log.Panicf("Not implemented") }
-func process_insufficient_security(connection Connection) { log.Panicf("Not implemented") }
-func process_internal_error(connection Connection) { log.Panicf("Not implemented") }
-func process_user_canceled(connection Connection) { log.Panicf("Not implemented") }
-func process_no_renegotiation(connection Connection) { log.Panicf("Not implemented") }
-func process_unsupported_extension(connection Connection) { log.Panicf("Not implemented") } /* new */
-func process_UNKNOWN(connection Connection) { log.Panicf("Not implemented") }
+func process_export_restriction_RESERVED(connection *Connection) { log.Panicf("Not implemented") }
+func process_protocol_version(connection *Connection) { log.Panicf("Not implemented") }
+func process_insufficient_security(connection *Connection) { log.Panicf("Not implemented") }
+func process_internal_error(connection *Connection) { log.Panicf("Not implemented") }
+func process_user_canceled(connection *Connection) { log.Panicf("Not implemented") }
+func process_no_renegotiation(connection *Connection) { log.Panicf("Not implemented") }
+func process_unsupported_extension(connection *Connection) { log.Panicf("Not implemented") } /* new */
+func process_UNKNOWN(connection *Connection) { log.Panicf("Not implemented") }
 
