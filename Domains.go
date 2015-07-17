@@ -31,10 +31,6 @@ func NewEvent(ucode uint8) Event {
 	// TODO Fix these things
 	lookup := make(map[int]string)
 
-	lookup[20] = "TypeChangeCypherSpec"
-	lookup[21] = "TypeAlert"
-	lookup[22] = "TypeHandshake"
-	lookup[23] = "TypeApplicationData"
 	lookup[0] = "HandshakeTypeHelloRequest"
 	lookup[1] = "HandshakeTypeClientHello"
 	lookup[2] = "HandshakeTypeServerHello"
