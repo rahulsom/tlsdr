@@ -72,11 +72,19 @@ func ColorizeOutput(bytes []byte) ([]byte) {
 	yellow := color.New(color.FgYellow).SprintFunc()
 	red := color.New(color.FgRed).SprintFunc()
 	green := color.New(color.FgGreen).SprintFunc()
+	//blue := color.New(color.FgBlue).SprintFunc()
+	cyan := color.New(color.FgCyan).SprintFunc()
 
 	var s string = string(bytes[:len(bytes)])
 	s = strings.Replace(s, "Failure", red("Failure"), -1)
 	s = strings.Replace(s, "-Recommendations", yellow("-Recommendations"), -1)
 	s = strings.Replace(s, "Success", green("Success"), -1)
+	s = strings.Replace(s, "All success", green("All success"), -1)
+	s = strings.Replace(s, "src:", cyan("src:"), -1)
+	s = strings.Replace(s, "dest:", cyan("dest:"), -1)
+
+	//a little hack to get rid of empty failure reason
+	s = strings.Replace(s, "<>", " ", -1)
 
 	return []byte(s)
 }
