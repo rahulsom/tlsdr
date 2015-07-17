@@ -14,33 +14,34 @@
   <table class="table table-hover">
     <thead>
       <tr>
-        <td>-</td>
-        <td>Actor</td>
+        <td>Src Host</td>
+        <td>Dest Host</td>
         <td>Action</td>
-        <td>Message</td>
-        <td>Success</td>
+        <td>Status</td>
+        <td>Failed Reason</td>
       </tr>
     </thead>
 
     <tbody>
     {{ range $index, $group := . }}
-      {{ range $idx, $step := $group.Steps }}
-          {{ if eq $step.Success true }}
+      {{ range $subIndex, $connection := $group }}
+          {{ if eq $connection.Success true }}
               <tr class="success">
           {{ else }}
               <tr class="danger">
           {{ end }}
+                <td>{{$connection.SrcHost}}</td>
+                <td>{{$connection.DestHost}}</td>
                 <td>-</td>
-                <td>{{$step.Actor}}</td>
-                <td>[sent]</td>
-                <td>{{$step.Description}}</td>
-          {{ if eq $step.Success true }}
+          {{ if eq $connection.Success true }}
                 <td>Success</td>
           {{ else }}
                 <td>Failure</td>
           {{ end }}
+                <td>{{$connection.FailedReason}}</td>
               </tr>
       {{ end }}
+      <tr class="info"><td></td><td></td><td></td><td></td><td></td></tr>
     {{ end }}
     </tbody>
   </table>
