@@ -92,10 +92,15 @@ func parseClientHello(hsp TLSHandshakeDecoder.TLSHandshake) TLSHandshakeDecoder.
 func CreateEventsFromHSPackets(handShakePacs list.List) list.List {
 	var events list.List
 	for el := handShakePacs.Front(); el != nil; el = el.Next() {
-		handshake := getHandShakeSegment(el.Value.(TLSHandshakeDecoder.TLSRecordLayer))
-		event := NewEvent(handshake.HandshakeType)
-		events.PushBack(event)
-		log.Printf("Created Event:", event)
+		tlsRecordLayer := el.Value.(TLSHandshakeDecoder.TLSRecordLayer)
+		hsPacets := DecomposeHandshakes(tlsRecordLayer.Fragment)
+		for e := hsPacets.Front(); e != nil; e = e.Next() {
+			handshake := e.Value.(TLSHandshakeDecoder.TLSHandshake)
+			event := NewEvent(handshake.HandshakeType)
+			events.PushBack(event)
+			log.Printf("Created Event:", event)
+		}
+
 	}
 	return events
 }
@@ -106,8 +111,8 @@ func DecomposeRecordLayer(data []byte) list.List {
 	if len(data) < 5 {
 		return list.List{}
 	}
-	log.Println("Calling......")
-	var handshakelist list.List
+	log.Println("Parsing one packet......")
+	var tlsLayerlist list.List
 	total := uint16(len(data))
 	var offset uint16 = 0
 
@@ -118,15 +123,47 @@ func DecomposeRecordLayer(data []byte) list.List {
 		p.Length = uint16(data[3+offset])<<8 | uint16(data[4+offset])
 		p.Fragment = make([]byte, p.Length)
 		l := copy(p.Fragment, data[5+offset:5+p.Length+offset])
-		handshakelist.PushBack(p)
+		tlsLayerlist.PushBack(p)
 		log.Println("Length: ", p.Length)
 		offset += 5+p.Length
-		log.Print("Type:  ", p.Fragment[0])
+		log.Print("Type:  ", p.ContentType)
 		if l < int(p.Length) {
 			fmt.Errorf("Payload to short: copied %d, expected %d.", l, p.Length)
 		}
 	}
+	return tlsLayerlist
+}
 
+func DecomposeHandshakes(data []byte) list.List {
+	if len(data) < 4 {
+		return list.List{}
+	}
+	log.Println("Parsing one TLSLayer.......")
+	var handshakelist list.List
+	total := uint32(len(data))
+	var offset uint32 = 0
+
+	for (offset < total) {
+		var p TLSHandshakeDecoder.TLSHandshake
+		p.HandshakeType = uint8(data[0+offset])
+		p.Length = uint32(data[1+offset])<<16 | uint32(data[2+offset])<<8 | uint32(data[3+offset])
+		p.Body = make([]byte, p.Length)
+		if (p.Length < 2048) {
+			l := copy(p.Body, data[4+offset : 4+p.Length+offset])
+
+			if l < int(p.Length) {
+				fmt.Errorf("Payload to short: copied %d, expected %d.", l, p.Length)
+			}
+			offset += 4+p.Length
+		} else {
+			p.HandshakeType = 99
+			p.Length = 0
+			offset = total
+		}
+
+		log.Printf("Handshake Type: %d, length: %d ", p.HandshakeType, p.Length)
+		handshakelist.PushBack(p)
+	}
 	return handshakelist
 }
 
