@@ -68,11 +68,12 @@ func DetectProblem(connection Connection, alert int) {
 	}
 }
 
-func findLastEvent(connection Connection, code int) (Event, error) {
+func findLastEvent(connection Connection, code uint8) (Event, error) {
+	newCode := int(code)
 	for e := connection.events.Back(); e != nil; e = e.Prev() {
 		// do something with e.Value
 		if event, ok := e.Value.(Event); ok {
-			if event.code == code {
+			if event.code == newCode {
 				return event, nil
 			}
 		}
