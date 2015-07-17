@@ -13,7 +13,7 @@ enabled=1
 EOF
 
 # Install all packages required
-yum install -y wireshark nginx openssl git ruby rubygems man wget ntp tree libpcap libpcap-devel #java-1.8.0-openjdk
+yum install -y wireshark nginx openssl git ruby rubygems man wget ntp tree libpcap libpcap-devel
 
 # Install thor for carb to work
 gem install thor
@@ -34,10 +34,10 @@ tar -C /usr/local -xzf go1.4.2.linux-amd64.tar.gz
 
 #Update time
 ntpdate pool.ntp.org
-/vagrant/test/bootstrap.sh
+cd $HOME && ln -s /vagrant tlsdr
+
+/root/tlsdr/test/bootstrap.sh
 
 # Setup gom and GOPATH
 source /etc/profile.d/aliases.sh
 go get github.com/mattn/gom
-
-cd $HOME && ln -s /vagrant tlsdr
