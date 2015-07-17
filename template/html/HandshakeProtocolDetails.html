@@ -5,9 +5,10 @@
   <title>TLS Handshake Details</title>
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-
   <!-- Optional theme -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -74,16 +75,26 @@
               </tr>
 
           {{ end }}
+
+          {{ if gt (len $connection.RecommendationsArray) 0 }}
+              {{ range $ridx, $recommendation := $connection.RecommendationsArray }}
+                <tr class="warning">
+                  <td></td>
+                  {{ if eq $ridx 0 }} <td>Recommendations:</td> {{ else }} <td></td> {{ end }}
+                  <td colspan="5">{{$recommendation}}</td>
+                </tr>
+              {{ end }}
+          {{ else }}
+            <tr class="warning"><td colspan="7"></td></tr>
+          {{ end }}
+
         {{ end }}
       {{ end }}
-      <tr class="warning"><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
     {{ end }}
     </tbody>
   </table>
 
 </div>
-
-<p class="success">{{.}}</p>
 </body>
 </html>
 
