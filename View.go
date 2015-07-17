@@ -6,6 +6,8 @@ import (
 	"container/list"
 	"bytes"
 	//"fmt"
+	"fmt"
+    "encoding/json"
 )
 
 const (
@@ -60,6 +62,11 @@ func Visualize(data list.List, format string)([]byte) {
 			if err != nil { panic(err) }
 			err = tmpl.Execute(output, groups)
 			if err != nil { panic(err) }
+		}
+		case "json": {
+			b, err := json.Marshal(groups)
+			if err != nil { panic(err) }
+			output.Write(b)
 		}
 	}
 	return output.Bytes()
