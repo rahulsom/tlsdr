@@ -24,7 +24,8 @@ func NewConnection(from string, to string) Connection {
 	return Connection{success:true, events:list.List{}, srcHost:from, destHost:to}
 }
 
-func NewEvent(code int) Event {
+func NewEvent(ucode uint8) Event {
+	code := int(ucode)
 	// TODO Fix these things
 	lookup := make(map[int]string)
 
@@ -53,7 +54,7 @@ func NewEvent(code int) Event {
 }
 
 func (event Event) String() string {
-	return fmt.Sprintf("Event{success: %t, type: '%s'}", event.success, event.eventType)
+	return fmt.Sprintf("Event{success: %t, type: '%s'($d)}", event.success, event.eventType, event.code)
 }
 
 func (connection Connection) String() string {
