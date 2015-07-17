@@ -36,10 +36,6 @@ func NewEvent(code int) Event {
 	}
 }
 
-func AddEvent(connection Connection, event Event) {
-	connection.events.PushBack(event)
-}
-
 func (event Event) String() string {
 	return fmt.Sprintf("Event{success: %t, type: '%s'}", event.success, event.eventType)
 }
@@ -47,4 +43,13 @@ func (event Event) String() string {
 func (connection Connection) String() string {
 	return fmt.Sprintf("Connection{success: %t, failReason: '%s', src: '%s', dest: '%s', recommendations: %#v, events: %#v}",
 		connection.success, connection.failedReason, connection.srcHost, connection.destHost, connection.recommendations, connection.events)
+}
+
+func (connection Connection) AddEvent(event Event) {
+	connection.events.PushBack(event)
+}
+
+func (connection Connection) WithEvent(event Event) Connection {
+	connection.events.PushBack(event)
+	return connection
 }
