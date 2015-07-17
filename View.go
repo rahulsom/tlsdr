@@ -5,6 +5,7 @@ import (
 	htmltemplate "html/template"
 	"container/list"
 	"bytes"
+	"strconv"
 	//"fmt"
     "encoding/json"
 )
@@ -45,9 +46,9 @@ func groupConnectionsDataModel(connections list.List)([][]Connection) {
 		//do grouping
 		var key string
 		if (conn.Success) {
-			key = conn.SrcHost + "-" + conn.DestHost + "-success"
+			key = conn.SrcHost + "-" + conn.DestHost + strconv.Itoa(conn.Events.Len()) + "-success"
 		} else {
-			key = conn.SrcHost + "-" + conn.DestHost + "-false-" + conn.FailedReason
+			key = conn.SrcHost + "-" + conn.DestHost + strconv.Itoa(conn.Events.Len()) + "-false-" + conn.FailedReason
 		}
 		existingGroup, found := groupMap[key]
 		if (!found) {
