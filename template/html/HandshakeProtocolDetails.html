@@ -15,8 +15,8 @@
       <tr>
         <td>#</td>
         <td>Src Host</td>
-        <td>Dest Host</td>
         <td>Actor</td>
+        <td>Dest Host</td>
         <td>Action</td>
         <td>Status</td>
         <td>Failed Reason</td>
@@ -34,13 +34,13 @@
           {{ end }}
                 <td>{{len $group}}</td>
                 <td>{{$connection.SrcHost}}</td>
+                <td>-</td>
                 <td>{{$connection.DestHost}}</td>
                 <td>-</td>
-                <td>-</td>
           {{ if eq $connection.Success true }}
-                <td>Success</td>
+                <td>✅</td>
           {{ else }}
-                <td>Failure</td>
+                <td>❌</td>
           {{ end }}
                 <td>{{$connection.FailedReason}}</td>
               </tr>
@@ -53,20 +53,20 @@
               {{ end }}
                 <td></td>
                 <td></td>
+                {{ if eq $event.C2s true }}
+                <td>&rarr;</td>
+                {{ else }}
+                <td>&larr;</td>
+                {{ end }}
                 <td></td>
 
-              {{ if eq $event.C2s true }}
-                <td>CLIENT</td>
-              {{ else }}
-                <td>SERVER</td>
-              {{ end }}
 
                 <td>{{ $event.EventType }}</td>
 
               {{ if eq $event.Success true }}
-                <td>Success</td>
+                <td>✅</td>
               {{ else }}
-                <td>Failure</td>
+                <td>❌</td>
               {{ end }}
 
                 <td></td>

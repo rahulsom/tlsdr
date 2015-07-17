@@ -9,7 +9,6 @@ import (
 	"log"
 	"container/list"
 	_ "errors"
-	"encoding/hex"
 )
 
 
@@ -21,7 +20,6 @@ func parseFile(fileName string) list.List {
 	} else {
 		packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
 		processPacketsChan(packetSource.Packets(), &connections)
-		log.Print("Final Connections", connections.Front().Value)
 	}
 	return connections
 }
@@ -30,13 +28,13 @@ func parseFile(fileName string) list.List {
 func connectionIdentifier(tcpContent []byte, ipContent []byte) (string, bool, string, string) {
 	srcPort := uint16(tcpContent[0])<<8 | uint16(tcpContent[1])
 	destPort := uint16(tcpContent[2])<<8 | uint16(tcpContent[3])
-	srcIp := hex.EncodeToString(ipContent[12:16])
-	destIp := hex.EncodeToString(ipContent[16:20])
+	srcIp := fmt.Sprintf("%d.%d.%d.%d", ipContent[12], ipContent[13], ipContent[14], ipContent[15])
+	destIp := fmt.Sprintf("%d.%d.%d.%d", ipContent[16], ipContent[17], ipContent[18], ipContent[19])
 
 	if (srcPort < destPort) {
-		return fmt.Sprintf("%s-%d-%s-%d", destIp, destPort, srcIp, srcPort), false, destIp, fmt.Sprintf("%s-%d", srcIp, srcPort)
+		return fmt.Sprintf("%s-%d-%s-%d", destIp, destPort, srcIp, srcPort), false, destIp, fmt.Sprintf("%s:%d", srcIp, srcPort)
 	} else {
-		return fmt.Sprintf("%s-%d-%s-%d", srcIp, srcPort, destIp, destPort), true, srcIp, fmt.Sprintf("%s-%d", destIp, destPort)
+		return fmt.Sprintf("%s-%d-%s-%d", srcIp, srcPort, destIp, destPort), true, srcIp, fmt.Sprintf("%s:%d", destIp, destPort)
 	}
 }
 // chanPacs: raw data as channel of gopacket.Packet from pcap file
@@ -70,7 +68,6 @@ func processPacketsChan(chanPacs chan gopacket.Packet, connections *list.List) {
 			for e := alertPackets.Front(); e != nil; e = e.Next() {
 				alert := e.Value.(Alert)
 				DetectProblem(connection, int(alert.Description))
-				log.Println("Connection after problem", connection)
 			}
 			events := CreateEventsFromHSPackets(handshakePackets, clientSent)
 			for e := events.Front(); e != nil; e = e.Next() {
@@ -166,9 +163,8 @@ func DecomposeRecordLayer(tlsPayload []byte) list.List {
 		p.Fragment = make([]byte, p.Length)
 		l := copy(p.Fragment, tlsPayload[5+offset:5+p.Length+offset])
 		tlsLayerlist.PushBack(p)
-		log.Println("Length: ", p.Length)
+		log.Println("Length: ", p.Length, "Type: ", p.ContentType)
 		offset += 5+p.Length
-		log.Print("Type:  ", p.ContentType)
 		if l < int(p.Length) {
 			fmt.Errorf("Payload to short: copied %d, expected %d.", l, p.Length)
 		}
