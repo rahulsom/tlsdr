@@ -46,7 +46,7 @@ func createStepGroups(steps []HandshakeProtocolStep)([]StepGroup) {
 
 func Visualize(data list.List, format string)([]byte) {
 	//TODO replace with real data
-	groups := groupConnectionsDataModel(CreateTestData())
+	groups := groupConnectionsDataModel(data)
 	//var result []byte
 	output := new(bytes.Buffer)
 	switch (format) {
