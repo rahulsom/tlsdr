@@ -85,10 +85,10 @@ func getViewDataModel()([]StepGroup) {
 }
 
 // test only
-func main() {
-	bytes := Visualize(list.List{}, "html")
-	fmt.Println(string(bytes))
-}
+//func main() {
+//	bytes := Visualize(list.List{}, "html")
+//	fmt.Println(string(bytes))
+//}
 
 //func main() {
 //	steps := make([]HandshakeProtocolStep,0)
