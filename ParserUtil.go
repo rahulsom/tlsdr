@@ -2,7 +2,7 @@ package main
 
 import (
 	_ "fmt"
-	_ "github.com/google/gopacket/pcap"
+	"github.com/google/gopacket/pcap"
 	"github.com/google/gopacket"
 	"github.com/certifyTian/TLSHandshakeDecoder"
 	_ "github.com/davecgh/go-spew/spew"
@@ -10,23 +10,21 @@ import (
 	"container/list"
 )
 
-/*
+
 //TODO obviously not a main function, rename it to the caller
-func main() {
-	if handle, err := pcap.OpenOffline("data/goodca-goodclient-goodclient-bad.pcap"); err != nil {
+func parseFile(fileName string) list.List{
+	connects := list.List{}
+	if handle, err := pcap.OpenOffline(fileName); err != nil {
 		panic(err)
 	} else {
 		packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
 		payloadPackets := producePayloadPackets(packetSource.Packets())
 		//produceHandshakePackets(payloadPackets)
-		produceAlertPackets(payloadPackets)
+		ProduceAlertPackets(payloadPackets)
 	}
+	return connects
 }
-*/
 
-//func handlePacket(p gopacket.PacketSource) {
-//
-//}
 
 // chanPacs: raw data as channel of gopacket.Packet from pcap file
 // return: a list of packets that has payload([]byte)
@@ -96,31 +94,13 @@ func parseClientHello(hsp TLSHandshakeDecoder.TLSHandshake) TLSHandshakeDecoder.
 	}
 }
 
-//// parse a handshake to a server hello struct
-//func parseServerHello(hsp TLSHandshakeDecoder.TLSHandshake) TLSHandshakeDecoder.TLSServerHello {
-//	var psh TLSHandshakeDecoder.TLSServerHello
-//
-//	return psh
-//}
+// --------------------------------------------Server Hello----------------------------------------
 
-func produceAlertPackets(payloadPacs list.List) list.List{
-	var alertPacs list.List
-	for e := payloadPacs.Front(); e != nil; e = e.Next() {
-		var p TLSHandshakeDecoder.TLSRecordLayer
-		pl := e.Value.([]byte)
-		err := TLSHandshakeDecoder.DecodeRecord(&p, pl); if err != nil {
-			panic(err)
-		} else {
-			if (len(p.Fragment) > 4 && p.ContentType == TLSHandshakeDecoder.TypeAlert) {
-				alertPacs.PushBack(p)
-			}
-		}
-	}
-	for e := alertPacs.Front(); e != nil; e = e.Next() {
-		log.Println("Alert data:", e)
-	}
-	return alertPacs
-}
+
+
+
+
+
 
 
 
