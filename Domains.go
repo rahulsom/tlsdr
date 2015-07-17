@@ -2,7 +2,6 @@ package main
 import (
 	"container/list"
 	"fmt"
-	"log"
 )
 
 type Connection struct {
