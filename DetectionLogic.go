@@ -35,8 +35,8 @@ const (
 	UNKNOWN                     int = 255
 )
 
-func (connection Connection) DetectProblem(alert int) Connection {
-	DetectProblem(&connection, alert)
+func (connection *Connection) DetectProblem(alert int) *Connection {
+	DetectProblem(connection, alert)
 	return connection
 }
 

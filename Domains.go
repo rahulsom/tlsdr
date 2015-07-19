@@ -22,8 +22,8 @@ type Event struct {
 	Code      int
 }
 
-func NewConnection(from string, to string) Connection {
-	return Connection{Success: true, Events: &list.List{}, SrcHost: from, DestHost: to, Recommendations: &list.List{}}
+func NewConnection(from string, to string) *Connection {
+	return &Connection{Success: true, Events: &list.List{}, SrcHost: from, DestHost: to, Recommendations: &list.List{}}
 }
 
 func NewEvent(ucode uint8, c2s bool) *Event {

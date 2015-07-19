@@ -54,9 +54,9 @@ func processPacketsChan(chanPacs chan gopacket.Packet, connections *list.List) {
 				c1 := NewConnection(from, to)
 				c1.ConnectionId = cId
 				//log.Printf("Addr 1 %T", c1)
-				connection = &c1
+				connection = c1
 				connMap[cId] = connection
-				//connections.PushBack(c1)
+				connections.PushBack(c1)
 			}
 
 			plList := list.List{}
@@ -72,13 +72,6 @@ func processPacketsChan(chanPacs chan gopacket.Packet, connections *list.List) {
 			for e := events.Front(); e != nil; e = e.Next() {
 				connection.AddEvent(e.Value.(*Event))
 			}
-			for e := connections.Front(); e != nil; e = e.Next() {
-				c2 := e.Value.(*Connection)
-				if c2.ConnectionId == connection.ConnectionId {
-					connections.Remove(e)
-				}
-			}
-			connections.PushBack(connection)
 
 		}
 	}
