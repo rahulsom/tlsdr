@@ -14,6 +14,7 @@ EOF
 
 # Install all packages required
 yum install -y wireshark nginx openssl git ruby rubygems man wget ntp tree libpcap libpcap-devel gcc
+yum install -y glibc-devel.i686
 
 # Install thor for carb to work
 gem install thor
