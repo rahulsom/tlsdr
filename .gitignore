@@ -79,6 +79,3 @@ _testmain.go
 data/
 _vendor/
 bin/
-
-tlsdr
-tlsdr_*
