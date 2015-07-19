@@ -1,7 +1,8 @@
 #!/bin/bash
 set -e
 
-gom install && gom build
+gom install && cd tlsdr && gom build
+cd ..
 
 if [[ $TRAVIS_BRANCH == 'master' && $TRAVIS_REPO_SLUG == "rahulsom/tlsdr" \
           && $TRAVIS_PULL_REQUEST == 'false' ]]; then
