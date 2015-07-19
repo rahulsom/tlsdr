@@ -1,45 +1,58 @@
 package main
 
 import (
-	"text/template"
-	htmltemplate "html/template"
-	"container/list"
 	"bytes"
+	"container/list"
+	htmltemplate "html/template"
 	"strconv"
+	"text/template"
 	//"fmt"
-    "encoding/json"
-	"strings"
+	"encoding/json"
 	"github.com/fatih/color"
+	"strings"
 )
 
-func Visualize(data list.List, format string)([]byte) {
+func Visualize(data list.List, format string) []byte {
 	//TODO replace with real data
 	groups := groupConnectionsDataModel(data)
 	//var result []byte
 	output := new(bytes.Buffer)
-	switch (format) {
-		case "txt": {
+	switch format {
+	case "txt":
+		{
 			tmpl, err := template.ParseFiles("template/txt/HandshakeProtocolDetails.txt")
-			if err != nil { panic(err) }
+			if err != nil {
+				panic(err)
+			}
 			err = tmpl.Execute(output, groups)
-			if err != nil { panic(err) }
+			if err != nil {
+				panic(err)
+			}
 		}
-		case "html": {
-            tmpl, err := htmltemplate.ParseFiles("template/html/HandshakeProtocolDetails.html")
-			if err != nil { panic(err) }
+	case "html":
+		{
+			tmpl, err := htmltemplate.ParseFiles("template/html/HandshakeProtocolDetails.html")
+			if err != nil {
+				panic(err)
+			}
 			err = tmpl.Execute(output, groups)
-			if err != nil { panic(err) }
+			if err != nil {
+				panic(err)
+			}
 		}
-		case "json": {
+	case "json":
+		{
 			b, err := json.Marshal(groups)
-			if err != nil { panic(err) }
+			if err != nil {
+				panic(err)
+			}
 			output.Write(b)
 		}
 	}
 	return output.Bytes()
 }
 
-func groupConnectionsDataModel(connections list.List)([][]Connection) {
+func groupConnectionsDataModel(connections list.List) [][]Connection {
 
 	groupMap := make(map[string][]Connection)
 	for e := connections.Front(); e != nil; e = e.Next() {
@@ -47,13 +60,13 @@ func groupConnectionsDataModel(connections list.List)([][]Connection) {
 
 		//do grouping
 		var key string
-		if (conn.Success) {
+		if conn.Success {
 			key = conn.SrcHost + "-" + conn.DestHost + strconv.Itoa(conn.Events.Len()) + "-success"
 		} else {
 			key = conn.SrcHost + "-" + conn.DestHost + strconv.Itoa(conn.Events.Len()) + "-false-" + conn.FailedReason
 		}
 		existingGroup, found := groupMap[key]
-		if (!found) {
+		if !found {
 			existingGroup = make([]Connection, 0)
 		}
 		groupMap[key] = append(existingGroup, conn)
@@ -63,12 +76,12 @@ func groupConnectionsDataModel(connections list.List)([][]Connection) {
 	var i int = 0
 	for _, value := range groupMap {
 		groups[i] = value
-		i ++
+		i++
 	}
 	return groups
 }
 
-func ColorizeOutput(bytes []byte) ([]byte) {
+func ColorizeOutput(bytes []byte) []byte {
 	yellow := color.New(color.FgYellow).SprintFunc()
 	red := color.New(color.FgRed).SprintFunc()
 	green := color.New(color.FgGreen).SprintFunc()

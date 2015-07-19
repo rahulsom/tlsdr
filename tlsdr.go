@@ -1,12 +1,12 @@
 package main
 
 import (
-	_ "fmt"
-	"os"
-	"log"
-	"io/ioutil"
-	"flag"
 	"container/list"
+	"flag"
+	_ "fmt"
+	"io/ioutil"
+	"log"
+	"os"
 )
 
 // Reads data from - (STDIN) or a named file
@@ -20,13 +20,13 @@ func readData(input *string) ([]byte, error) {
 	}
 }
 
-func parseData(bytes []byte) (list.List) {
+func parseData(bytes []byte) list.List {
 	log.Println("Parsing data")
 	// TODO Tian
 	return list.List{}
 }
 
-func analyzeData(data list.List) (list.List) {
+func analyzeData(data list.List) list.List {
 	log.Println("Analyzing data")
 	// TODO Rahul
 	return data
@@ -39,10 +39,10 @@ func visualizeData(data list.List, output string, format string) {
 	os.MkdirAll(output, 0777)
 
 	bytes := Visualize(data, format)
-	if (output == "-") {
+	if output == "-" {
 		os.Stdout.Write(ColorizeOutput(bytes))
 	} else {
-		ioutil.WriteFile(output + "/index." + format, bytes, 0644)
+		ioutil.WriteFile(output+"/index."+format, bytes, 0644)
 	}
 }
 
@@ -90,7 +90,7 @@ func main() {
 	if err == nil {
 		p := parseFile(*input)
 		l := list.List{}
-		for e := p.Front(); e != nil ; e = e.Next() {
+		for e := p.Front(); e != nil; e = e.Next() {
 			c := e.Value.(*Connection)
 			l.PushBack(*c)
 		}

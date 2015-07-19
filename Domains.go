@@ -1,4 +1,5 @@
 package main
+
 import (
 	"container/list"
 	"fmt"
@@ -12,11 +13,9 @@ type Connection struct {
 	Recommendations *list.List
 	FailedReason    string
 	ConnectionId    string
-
 }
 
 type Event struct {
-
 	Success   bool
 	EventType string
 	C2s       bool
@@ -24,7 +23,7 @@ type Event struct {
 }
 
 func NewConnection(from string, to string) Connection {
-	return Connection{Success:true, Events:&list.List{}, SrcHost:from, DestHost:to, Recommendations:&list.List{}}
+	return Connection{Success: true, Events: &list.List{}, SrcHost: from, DestHost: to, Recommendations: &list.List{}}
 }
 
 func NewEvent(ucode uint8, c2s bool) *Event {
@@ -47,9 +46,9 @@ func NewEvent(ucode uint8, c2s bool) *Event {
 
 	// TODO FIx this
 	if code == 22 || code == 11 || code == 13 {
-		return &Event{Success:true, EventType:lookup[code], C2s: c2s, Code: code}
+		return &Event{Success: true, EventType: lookup[code], C2s: c2s, Code: code}
 	} else {
-		return &Event{Success:true, EventType:lookup[code], C2s: c2s, Code: code}
+		return &Event{Success: true, EventType: lookup[code], C2s: c2s, Code: code}
 	}
 }
 
@@ -77,7 +76,7 @@ func (connection Connection) EventsArray() []Event {
 
 	for e := connection.Events.Front(); e != nil; e = e.Next() {
 		event := e.Value.(*Event)
-		retval=append(retval, *event)
+		retval = append(retval, *event)
 	}
 
 	return retval
@@ -87,7 +86,7 @@ func (connection Connection) RecommendationsArray() []string {
 
 	for e := connection.Recommendations.Front(); e != nil; e = e.Next() {
 		recommendation := e.Value.(string)
-		retval=append(retval,recommendation)
+		retval = append(retval, recommendation)
 	}
 
 	return retval
