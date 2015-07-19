@@ -4,7 +4,7 @@ import (
 	"container/list"
 	_ "errors"
 	"fmt"
-	"github.com/certifyTian/TLSHandshakeDecoder"
+	"github.com/rahulsom/TLSHandshakeDecoder"
 	_ "github.com/davecgh/go-spew/spew"
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/pcap"

@@ -2,7 +2,7 @@ package main
 
 import (
 	"errors"
-	"github.com/certifyTian/TLSHandshakeDecoder"
+	"github.com/rahulsom/TLSHandshakeDecoder"
 	"log"
 )
 
