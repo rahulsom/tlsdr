@@ -20,21 +20,8 @@ func readData(input *string) ([]byte, error) {
 	}
 }
 
-func parseData(bytes []byte) list.List {
-	log.Println("Parsing data")
-	// TODO Tian
-	return list.List{}
-}
-
-func analyzeData(data list.List) list.List {
-	log.Println("Analyzing data")
-	// TODO Rahul
-	return data
-}
-
 func visualizeData(data list.List, output string, format string) {
 	log.Println("Visualizing data to " + output + " as " + format)
-	// TODO Yuan
 	os.RemoveAll(output)
 	os.MkdirAll(output, 0777)
 
