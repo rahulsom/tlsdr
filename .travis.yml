@@ -11,7 +11,6 @@ before_install:
   - gox -build-toolchain
 script:
   - "./travis.sh"
-  - gox
 cache:
   directories:
     - "$HOME/gopath"

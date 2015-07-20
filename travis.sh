@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+gcc --version
+
 gom install && cd tlsdr && gom build
 cd ..
 
