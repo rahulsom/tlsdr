@@ -20,7 +20,8 @@ func Visualize(data list.List, format string) []byte {
 	switch format {
 	case "txt":
 		{
-			tmpl, err := template.ParseFiles("template/txt/HandshakeProtocolDetails.txt")
+			txtTemplate := FSMustString(false, "/template/txt/HandshakeProtocolDetails.txt")
+			tmpl, err := template.New("text").Parse(txtTemplate)
 			if err != nil {
 				panic(err)
 			}
@@ -31,7 +32,8 @@ func Visualize(data list.List, format string) []byte {
 		}
 	case "html":
 		{
-			tmpl, err := htmltemplate.ParseFiles("template/html/HandshakeProtocolDetails.html")
+			htmlTemplate := FSMustString(false, "/template/html/HandshakeProtocolDetails.html")
+			tmpl, err := htmltemplate.New("text").Parse(htmlTemplate)
 			if err != nil {
 				panic(err)
 			}

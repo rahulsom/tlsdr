@@ -1,4 +1,4 @@
-{{ range $index, $group := . }}---------------------------------------------------------------------------
+{{/* To update this template, run 'esc -o tlsdr/template.go template' */}}{{ range $index, $group := . }}---------------------------------------------------------------------------
 {{ range $subIndex, $connection := $group }}{{ if eq $subIndex 0 }}[{{len $group}}]  src: {{$connection.SrcHost}}   dest: {{$connection.DestHost}}{{ if eq $connection.Success true }}   Success{{ else }}   Failure{{ end }}   <{{$connection.FailedReason}}>{{ range $i, $event := $connection.EventsArray }}
                {{ if eq $event.C2s true }}-->{{ else }}<--{{ end }} {{ $event.EventType }} {{ if eq $event.Success true }}Success{{ else }}Failure{{ end }}{{ end }}
 {{ if gt (len $connection.RecommendationsArray) 0 }}{{ range $ridx, $recommendation := $connection.RecommendationsArray }}{{ if eq $ridx 0 }}     -Recommendations: {{$recommendation}}
