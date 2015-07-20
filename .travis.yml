@@ -7,8 +7,8 @@ os:
 before_install:
   - sudo apt-get install libpcap-dev
   - go get github.com/mattn/gom
-  - go get github.com/mitchellh/gox
-  - gox -build-toolchain
+#  - go get github.com/mitchellh/gox
+#  - gox -build-toolchain
 script:
   - "./travis.sh"
 cache:
