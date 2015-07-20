@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/rahulsom/tlsdr.svg?branch=master)](https://travis-ci.org/rahulsom/tlsdr)
+
 TLS;DR
 ===
 > Transport Layer Security; Didn't Read
@@ -16,7 +18,7 @@ find equivalent for your OS
 yum install -y wireshark
 
 # Install tools required for golang to work
-yum install -y git gcc libpcap-devel 
+yum install -y git gcc libpcap-devel
 
 # Install golang (depending on your os+architecture)
 wget --no-check-certificate https://storage.googleapis.com/golang/go1.4.2.linux-amd64.tar.gz
